@@ -1,0 +1,81 @@
+import Vue from "vue";
+import Vuex from "vuex";
+import * as fb from "../firebase";
+import * as firebase from "firebase/app";
+import router from "../router";
+
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+  state: {
+    userProfile: {},
+  },
+  mutations: {
+    setUserProfile(state, val) {
+      state.userProfile = val;
+    },
+  },
+  actions: {
+    async login({ dispatch }, form) {
+      const { user } = await fb.auth.signInWithEmailAndPassword(
+        form.email,
+        form.password
+      );
+
+      dispatch("fetchUser", user);
+    },
+    async fetchUser({ commit }, user) {
+      const response = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: user.email, uid: user.uid }),
+      });
+
+      const responseJSON = await response.json();
+
+      console.log(responseJSON);
+
+      commit("setUserProfile", responseJSON);
+
+      router.push("/");
+    },
+    async signup({ dispatch }, form) {
+      const { user } = await fb.auth.createUserWithEmailAndPassword(
+        form.email,
+        form.password
+      );
+
+      dispatch("fetchUser", user);
+    },
+    async logout({ commit }) {
+      await fb.auth.signOut();
+
+      commit("setUserProfile", {});
+      router.push("/login");
+    },
+    async loginGoogle({ dispatch }) {
+      try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const results = await firebase.auth().signInWithPopup(provider);
+        console.log(results.user);
+        dispatch("fetchUser", results.user);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async loginFacebook({ dispatch }) {
+      try {
+        const provider = new firebase.auth.FacebookAuthProvider();
+        const results = await firebase.auth().signInWithPopup(provider);
+        console.log(results.user);
+        dispatch("fetchUser", results.user);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
+});
+
+export default store;
