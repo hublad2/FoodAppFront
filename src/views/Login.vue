@@ -36,14 +36,14 @@
             id="password1"
           />
         </div>
-        <button @click="login()" class="button">Log In</button>
+        <button @click="login()" class="button">Zaloguj się</button>
         <ul class="native-extras">
           <li>
-            <span>Nie masz konta?</span>
+            <span>Nie masz konta? </span>
             <a>Zarejestruj się</a>
           </li>
           <li>
-            <span>Zapomniałeś hasło?</span>
+            <span>Zapomniałeś hasła? </span>
             <a>Odzyskaj hasło</a>
           </li>
         </ul>
@@ -154,7 +154,7 @@ export default {
   margin: 0 auto;
   max-width: 80%;
   min-height: 800px;
-  justify-content: space-evenly;
+  padding: 50px 0;
   &_header {
     @extend %header-text;
   }
@@ -163,6 +163,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 110px;
   }
 
   button {
@@ -180,7 +181,7 @@ export default {
     text-align: center;
     border-bottom: 1px solid #000;
     line-height: 0.1em;
-    margin: 10px 0 20px;
+    margin: 50px 0 20px;
 
     span {
       background: $colorBackground1;
@@ -189,6 +190,13 @@ export default {
   }
 
   &_native {
+    button {
+      @extend %green-button;
+      width: 100%;
+      margin: 50px auto 0 auto;
+      display: flex;
+      justify-content: center;
+    }
   }
 }
 
@@ -225,16 +233,33 @@ export default {
 .native-input {
   display: flex;
   flex-direction: column;
+  margin-top: 25px;
 
   &_label {
     @extend %regular-text;
     font-weight: bold;
+    margin-bottom: 3px;
   }
 
   &_input {
     background: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.25);
     height: 40px;
+  }
+}
+
+.native-extras {
+  @extend %regular-text;
+  margin-top: 35px;
+
+  li {
+    margin-top: 10px;
+
+    a {
+      font-weight: bold;
+      color: $colorFont1;
+      text-decoration: underline;
+    }
   }
 }
 </style>
