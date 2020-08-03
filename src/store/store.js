@@ -17,13 +17,17 @@ const store = new Vuex.Store({
   },
   actions: {
     async login({ dispatch }, form) {
-      const { user } = await fb.auth.signInWithEmailAndPassword(
-        form.email,
-        form.password
-      );
-
-      dispatch("fetchUser", user);
+      try {
+        const { user } = await fb.auth.signInWithEmailAndPassword(
+          form.email,
+          form.password
+        );
+        dispatch("fetchUser", user);
+      } catch (err) {
+        console.log(err);
+      }
     },
+    /* Log in at server and get user token */
     async fetchUser({ commit }, user) {
       const response = await fetch("http://localhost:3000/login", {
         method: "POST",
