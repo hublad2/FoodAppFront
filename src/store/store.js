@@ -9,10 +9,14 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     userProfile: {},
+    logged: false,
   },
   mutations: {
     setUserProfile(state, val) {
       state.userProfile = val;
+    },
+    setLoginStatus(state, val) {
+      state.logged = val;
     },
   },
   actions: {
@@ -42,8 +46,9 @@ const store = new Vuex.Store({
       console.log(responseJSON);
 
       commit("setUserProfile", responseJSON);
+      commit("setLoginStatus", true);
 
-      router.push("/");
+      router.push("/search");
     },
     async signup({ dispatch }, form) {
       const { user } = await fb.auth.createUserWithEmailAndPassword(
@@ -57,6 +62,7 @@ const store = new Vuex.Store({
       await fb.auth.signOut();
 
       commit("setUserProfile", {});
+      commit("setLoginStatus", false);
       router.push("/login");
     },
     async loginGoogle({ dispatch }) {

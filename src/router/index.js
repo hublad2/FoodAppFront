@@ -35,6 +35,12 @@ const routes = [
       requiresAuth: true,
     },
   },
+  {
+    path: "/search",
+    name: "Search",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Search.vue"),
+  },
 ];
 
 const router = new VueRouter({

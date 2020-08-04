@@ -37,3 +37,8 @@
   font-size: 1.8rem;
   color: $colorFont1;
 }
+
+%input {
+  background-color: $colorBackground2;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
