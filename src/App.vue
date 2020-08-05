@@ -27,6 +27,7 @@ export default {
 */
 @import "./scss/_variables.scss";
 @import "./scss/_extensions.scss";
+
 html,
 body,
 div,

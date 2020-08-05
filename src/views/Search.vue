@@ -55,17 +55,31 @@
     </section>
     <button @click="fetchRecipes()" class="button">Wyszukaj</button>
     <section class="search-wrapper_results" v-if="recipes">
-      <div v-for="item in recipes" :key="item.uri">
-        <img :src="item.recipe.image" />
-        <h2>{{ item.recipe.label }}</h2>
-      </div>
+      <RecipeItem
+        v-for="item in recipes"
+        :itemRecipe="item"
+        :key="item.uri"
+        @click.native="handleRecipeModalOpen(item)"
+      />
     </section>
+    <RecipeModal
+      v-if="recipeModalOpen"
+      :itemRecipeModal="recipeModalItem"
+      @closeRecipeModal="recipeModalOpen = false"
+    />
   </div>
 </template>
 
 <script>
+import RecipeItem from "@/components/RecipeItem.vue";
+import RecipeModal from "@/components/RecipeModal.vue";
+
 export default {
   name: "Search",
+  components: {
+    RecipeItem,
+    RecipeModal,
+  },
   data() {
     return {
       searchForm: {
@@ -77,9 +91,15 @@ export default {
         diet: "",
       },
       recipes: [],
+      recipeModalItem: null,
+      recipeModalOpen: false,
     };
   },
   methods: {
+    handleRecipeModalOpen(item) {
+      this.recipeModalItem = item;
+      this.recipeModalOpen = true;
+    },
     async fetchRecipes() {
       // Put marked health labels into array of strings
       let healthArray = [];
@@ -126,7 +146,8 @@ export default {
 
   &_results {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 400px));
+    justify-content: center;
     gap: 60px;
     margin-top: 100px;
 
@@ -188,13 +209,25 @@ export default {
   justify-content: flex-start;
 
   &_label {
-    margin: 0 20px;
+    margin: 0;
+    @media screen and (min-width: 340px) {
+      margin: 0 5px;
+    }
+
+    @media screen and (min-width: 500px) {
+      margin: 0 20px;
+    }
   }
 
   &_input {
     @extend %input;
-    width: 40px !important;
+    width: 50px !important;
     height: 40px !important;
+
+    @media screen and (min-width: 340px) {
+      width: 40px !important;
+      height: 40px !important;
+    }
   }
 }
 
