@@ -48,7 +48,7 @@ const store = new Vuex.Store({
       commit("setUserProfile", responseJSON);
       commit("setLoginStatus", true);
 
-      router.push("/search");
+      router.push("/create");
     },
     async signup({ dispatch }, form) {
       const { user } = await fb.auth.createUserWithEmailAndPassword(

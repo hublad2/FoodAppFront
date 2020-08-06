@@ -16,6 +16,7 @@
             id="name2"
             name="name2"
             data-role="taginput"
+            required
           />
         </div>
         <div class="form-input">
@@ -51,12 +52,29 @@
             rows="15"
             cols="50"
             class="form-input_input"
-            v-model.trim="createForm.preparation"
+            v-model.trim="createForm.preparations"
             placeholder="Sposób przygotowania"
           >
           </textarea>
         </div>
-        <button class="button">Zapisz</button>
+        <div class="form-input">
+          <label class="form-input_label" for="photo2">Zjdęcie</label>
+          <input
+            id="photo2"
+            class="form-input_input"
+            accept="image/*"
+            name="photo2"
+            type="file"
+            @change="initPreview()"
+          />
+        </div>
+        <img
+          v-if="previewOpen"
+          :src="previewPhoto"
+          id="previewImage"
+          class="form-input_preview"
+        />
+        <button @click="fetchCreateRecipe()" class="button">Zapisz</button>
       </form>
     </section>
   </div>
@@ -71,9 +89,13 @@ export default {
   data() {
     return {
       createForm: {
-        email: "",
-        password: "",
+        name: "",
+        description: "",
+        ingredients: [],
+        preparations: "",
       },
+      previewPhoto: null,
+      previewOpen: false,
     };
   },
   mounted() {
@@ -83,7 +105,83 @@ export default {
       delimiters: null,
     });
 
+    ingredients.on("add", (e) => {
+      this.createForm.ingredients.push(e.detail.data.value);
+    });
+
     ingredients.addTags("Składnik");
+    console.log(ingredients.value);
+  },
+  methods: {
+    checkIfOkToSend() {
+      if (
+        this.createForm.name != "" &&
+        this.createForm.ingredients.length > 1
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    initPreview() {
+      const imageUploader = document.querySelector("#photo2");
+      this.previewPhoto = URL.createObjectURL(imageUploader.files[0]);
+      this.previewOpen = true;
+    },
+    getDataUrl(img) {
+      // Create canvas
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      // Set width and height
+      canvas.width = img.width;
+      canvas.height = img.height;
+      // Draw the image
+      ctx.drawImage(img, 0, 0);
+      return canvas.toDataURL("image/jpeg");
+    },
+    runImg() {
+      let dataUrl = "";
+      if (this.previewOpen) {
+        const img = document.querySelector("#previewImage");
+        dataUrl = this.getDataUrl(img);
+      }
+      return dataUrl;
+    },
+    async fetchCreateRecipe() {
+      //Run only if the user selected image to send
+      if (this.checkIfOkToSend()) {
+        const dataUrl = this.runImg();
+
+        const updatedIngredients = this.createForm.ingredients.filter(
+          (ingredient) => ingredient != "Składnik"
+        );
+
+        console.log(updatedIngredients);
+
+        let results = await fetch("http://localhost:3000/recipes/", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: this.createForm.name,
+            ingredients: updatedIngredients,
+            description: this.createForm.description,
+            preparation: this.createForm.preparations,
+            userId: this.$store.state.userProfile.user._id,
+            photo: dataUrl,
+            edamamId: false,
+          }),
+        });
+
+        let resultsJSON = await results.json();
+        this.recipes = resultsJSON.hits;
+        console.log(resultsJSON);
+      } else {
+        alert("Wypelnij Nazwę i Składniki");
+      }
+    },
   },
 };
 </script>
@@ -123,6 +221,13 @@ button {
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.25);
   @extend %regular-text;
+
+  .tagify__input::before {
+    /* Chrome/Opera/Safari */
+    white-space: pre-line;
+    position: absolute;
+    top: 5px;
+  }
 }
 
 .form-input {
@@ -133,7 +238,7 @@ button {
   &_label {
     @extend %regular-text;
     font-weight: bold;
-    margin-bottom: 3px;
+    margin-bottom: 10px;
   }
 
   &_input {
@@ -142,8 +247,18 @@ button {
     border: 1px solid rgba(0, 0, 0, 0.25);
   }
 
+  ::-webkit-input-placeholder {
+    padding: 5px 0 0 5px;
+  }
+
   &_single-line {
     height: 40px;
+  }
+
+  &_preview {
+    margin-top: 10px;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.25);
   }
 }
 </style>

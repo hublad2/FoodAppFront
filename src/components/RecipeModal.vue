@@ -18,7 +18,7 @@
       <button class="button">
         <a :href="preparation" target="_blank">Przygotowanie</a>
       </button>
-      <button class="button">Zapisz przepis</button>
+      <button @click="fetchSaveRecipe()" class="button">Zapisz przepis</button>
     </div>
   </div>
 </template>
@@ -55,23 +55,22 @@ export default {
     this.preparation = this.itemRecipeModal.recipe.url;
   },
   methods: {
-    async fetchRecipes() {
-      // Put marked health labels into array of strings
-      let healthArray = [];
-      if (this.searchForm.health.sugar) healthArray.push("sugar-conscious");
-      if (this.searchForm.health.vegetarian) healthArray.push("vegeterian");
-
-      // Fetch recipes
-      let results = await fetch("http://localhost:3000/recipes/edamam", {
+    async fetchSaveRecipe() {
+      //Run only if the user selected image to send
+      let results = await fetch("http://localhost:3000/recipes/", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${this.$store.state.userProfile.token}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          keyword: this.searchForm.keywords,
-          healthLabel: healthArray,
-          dietLabel: this.searchForm.diet,
+          name: this.title,
+          ingredients: this.ingredients,
+          description: "",
+          preparation: this.preparation,
+          userId: this.$store.state.userProfile.user._id,
+          photo: this.photo,
+          edamamId: true,
         }),
       });
 
