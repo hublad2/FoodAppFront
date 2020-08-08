@@ -96,22 +96,25 @@ export default {
     async fetchSaveRecipe() {
       if (this.$store.state.userProfile.token) {
         //Run only if the user selected image to send
-        let results = await fetch("http://localhost:3000/recipes/", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${this.$store.state.userProfile.token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: this.title,
-            ingredients: this.ingredients,
-            description: "",
-            preparation: this.preparation,
-            userId: this.$store.state.userProfile.user._id,
-            photo: this.photo,
-            edamamId: true,
-          }),
-        });
+        let results = await fetch(
+          "https://hidden-cliffs-64077.herokuapp.com/recipes/",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: this.title,
+              ingredients: this.ingredients,
+              description: "",
+              preparation: this.preparation,
+              userId: this.$store.state.userProfile.user._id,
+              photo: this.photo,
+              edamamId: true,
+            }),
+          }
+        );
 
         let resultsJSON = await results.json();
         this.recipes = resultsJSON.hits;

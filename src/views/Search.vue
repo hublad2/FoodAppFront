@@ -102,6 +102,7 @@ export default {
       this.recipeModalOpen = true;
     },
     async fetchRecipes() {
+      this.recipes = null;
       // Put marked health labels into array of strings
       let healthArray = [];
       if (this.searchForm.health.sugar) healthArray.push("sugar-conscious");
@@ -109,7 +110,7 @@ export default {
 
       // Fetch recipes
       let results = await fetch(
-        "https://hidden-cliffs-64077.herokuapp.com/edamam",
+        "https://hidden-cliffs-64077.herokuapp.com/recipes/edamam",
         {
           method: "POST",
           headers: {

@@ -7,7 +7,7 @@
       auctor nunc.
     </h2>
     <router-link to="/entry" tag="button" class="home-wrapper_button"
-      >Wypróboj</router-link
+      >Wypróbuj</router-link
     >
     <div class="home-wrapper_list list">
       <ul>

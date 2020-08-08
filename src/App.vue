@@ -186,6 +186,7 @@ html {
   li:nth-of-type(2) {
     font-weight: bold;
     text-decoration: underline;
+    cursor: pointer;
   }
 }
 </style>

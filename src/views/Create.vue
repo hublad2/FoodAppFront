@@ -110,6 +110,12 @@ export default {
       this.createForm.ingredients.push(e.detail.data.value);
     });
 
+    ingredients.on("remove", (e) => {
+      this.createForm.ingredients = this.createForm.ingredients.filter(
+        (ingredient) => ingredient != e.detail.data.value
+      );
+    });
+
     ingredients.addTags("Składnik");
     console.log(ingredients.value);
   },
@@ -117,7 +123,7 @@ export default {
     checkIfOkToSend() {
       if (
         this.createForm.name != "" &&
-        this.createForm.ingredients.length > 1
+        this.createForm.ingredients.length > 0
       ) {
         return true;
       } else {
@@ -159,25 +165,27 @@ export default {
 
         console.log(updatedIngredients);
 
-        let results = await fetch("http://localhost:3000/recipes/", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${this.$store.state.userProfile.token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: this.createForm.name,
-            ingredients: updatedIngredients,
-            description: this.createForm.description,
-            preparation: this.createForm.preparations,
-            userId: this.$store.state.userProfile.user._id,
-            photo: dataUrl,
-            edamamId: false,
-          }),
-        });
-
+        let results = await fetch(
+          "https://hidden-cliffs-64077.herokuapp.com/recipes/",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: this.createForm.name,
+              ingredients: updatedIngredients,
+              description: this.createForm.description,
+              preparation: this.createForm.preparations,
+              userId: this.$store.state.userProfile.user._id,
+              photo: dataUrl,
+              edamamId: false,
+            }),
+          }
+        );
+        console.log(results);
         let resultsJSON = await results.json();
-        this.recipes = resultsJSON.hits;
         console.log(resultsJSON);
       } else {
         alert("Wypelnij Nazwę i Składniki");
