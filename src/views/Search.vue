@@ -54,6 +54,7 @@
       </form>
     </section>
     <button @click="fetchRecipes()" class="button">Wyszukaj</button>
+    <router-link to="/entry" tag="button" class="button">Powrót</router-link>
     <section class="search-wrapper_results" v-if="recipes">
       <RecipeItem
         v-for="item in recipes"
@@ -107,18 +108,20 @@ export default {
       if (this.searchForm.health.vegetarian) healthArray.push("vegeterian");
 
       // Fetch recipes
-      let results = await fetch("http://localhost:3000/recipes/edamam", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${this.$store.state.userProfile.token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          keyword: this.searchForm.keywords,
-          healthLabel: healthArray,
-          dietLabel: this.searchForm.diet,
-        }),
-      });
+      let results = await fetch(
+        "https://hidden-cliffs-64077.herokuapp.com/edamam",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            keyword: this.searchForm.keywords,
+            healthLabel: healthArray,
+            dietLabel: this.searchForm.diet,
+          }),
+        }
+      );
 
       let resultsJSON = await results.json();
       this.recipes = resultsJSON.hits;

@@ -1,9 +1,11 @@
 <template>
   <div id="app">
     <aside v-if="this.$store.state.logged">
-      <ul>
-        <li>Witaj {{ user }}</li>
-        <li><router-link to="/logout">Wyloguj się</router-link></li>
+      <ul class="navigation">
+        <li>
+          Witaj <span>{{ user }}</span>
+        </li>
+        <li @click="logout()">Wyloguj się</li>
       </ul>
     </aside>
     <router-view />
@@ -15,6 +17,11 @@ export default {
   computed: {
     user() {
       return this.$store.state.userProfile.user.email;
+    },
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
     },
   },
 };
@@ -162,5 +169,23 @@ table {
 html {
   font-size: 62.5%;
   background-color: $colorBackground1;
+}
+
+.navigation {
+  @extend %regular-text;
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 30px;
+
+  li {
+    span {
+      font-weight: bold;
+    }
+  }
+
+  li:nth-of-type(2) {
+    font-weight: bold;
+    text-decoration: underline;
+  }
 }
 </style>

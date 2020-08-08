@@ -13,6 +13,10 @@ export default {
       type: Object,
       required: true,
     },
+    listMode: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -21,8 +25,13 @@ export default {
     };
   },
   mounted() {
-    this.photo = this.itemRecipe.recipe.image;
-    this.title = this.itemRecipe.recipe.label;
+    if (!this.listMode) {
+      this.photo = this.itemRecipe.recipe.image;
+      this.title = this.itemRecipe.recipe.label;
+    } else {
+      this.photo = this.itemRecipe.photo;
+      this.title = this.itemRecipe.name;
+    }
   },
 };
 </script>

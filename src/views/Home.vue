@@ -6,7 +6,7 @@
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi gravida
       auctor nunc.
     </h2>
-    <router-link to="/login" tag="button" class="home-wrapper_button"
+    <router-link to="/entry" tag="button" class="home-wrapper_button"
       >Wypróboj</router-link
     >
     <div class="home-wrapper_list list">

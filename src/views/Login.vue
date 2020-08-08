@@ -40,7 +40,7 @@
         <ul class="native-extras">
           <li>
             <span>Nie masz konta? </span>
-            <a>Zarejestruj się</a>
+            <router-link to="/register">Zarejestruj się</router-link>
           </li>
           <li>
             <span>Zapomniałeś hasła? </span>

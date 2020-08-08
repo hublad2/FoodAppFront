@@ -5,20 +5,39 @@
         <span>{{ title }}</span>
         <i @click="$emit('closeRecipeModal')" class="fas fa-times"></i>
       </header>
+      <img class="recipe-image" :src="photo" />
+      <section
+        class="recipe-wrapper_recipe recipe-description"
+        v-if="!edamamId"
+      >
+        <h2>Opis</h2>
+        <p>{{ description }}</p>
+      </section>
       <section class="recipe-wrapper_recipe recipe-ingredients">
-        <h2 class="recipe-ingredients_header">Składniki:</h2>
+        <h2 class="recipe-ingredients_header">Składniki</h2>
         <div class="recipe-ingredients_wrapper">
           <Ingredient
             v-for="ingredient in ingredients"
             :key="ingredient.text"
             :itemIngredient="ingredient"
+            :edamamId="edamamId"
           />
         </div>
       </section>
-      <button class="button">
+      <section
+        class="recipe-wrapper_recipe recipe-preparation"
+        v-if="!edamamId"
+      >
+        <h2>Przygotowanie</h2>
+        <p>{{ preparation }}</p>
+      </section>
+      <!-- If recipe is from Edamam, preparation is a link, not a text -->
+      <button v-if="edamamId" class="button">
         <a :href="preparation" target="_blank">Przygotowanie</a>
       </button>
-      <button @click="fetchSaveRecipe()" class="button">Zapisz przepis</button>
+      <button v-if="!listMode" @click="fetchSaveRecipe()" class="button">
+        Zapisz przepis
+      </button>
     </div>
   </div>
 </template>
@@ -36,6 +55,14 @@ export default {
       type: Object,
       required: true,
     },
+    listMode: {
+      type: Boolean,
+      default: false,
+    },
+    edamamId: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -44,39 +71,54 @@ export default {
         photo: null,
         preparation: null,
         title: null,
+        description: null,
       },
       recipes: [],
     };
   },
   created() {
-    this.ingredients = this.itemRecipeModal.recipe.ingredients;
-    this.photo = this.itemRecipeModal.recipe.image;
-    this.title = this.itemRecipeModal.recipe.label;
-    this.preparation = this.itemRecipeModal.recipe.url;
+    if (!this.listMode) {
+      this.ingredients = this.itemRecipeModal.recipe.ingredients;
+      this.photo = this.itemRecipeModal.recipe.image;
+      this.title = this.itemRecipeModal.recipe.label;
+      this.preparation = this.itemRecipeModal.recipe.url;
+    } else {
+      // If recipe is being shown in list view, it gets data in different form
+      this.ingredients = this.itemRecipeModal.ingredients;
+      this.photo = this.itemRecipeModal.photo;
+      this.title = this.itemRecipeModal.name;
+      this.description = this.itemRecipeModal.description;
+      this.preparation = this.itemRecipeModal.preparation;
+      this.edamamId = this.itemRecipeModal.edamamId;
+    }
   },
   methods: {
     async fetchSaveRecipe() {
-      //Run only if the user selected image to send
-      let results = await fetch("http://localhost:3000/recipes/", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${this.$store.state.userProfile.token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: this.title,
-          ingredients: this.ingredients,
-          description: "",
-          preparation: this.preparation,
-          userId: this.$store.state.userProfile.user._id,
-          photo: this.photo,
-          edamamId: true,
-        }),
-      });
+      if (this.$store.state.userProfile.token) {
+        //Run only if the user selected image to send
+        let results = await fetch("http://localhost:3000/recipes/", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: this.title,
+            ingredients: this.ingredients,
+            description: "",
+            preparation: this.preparation,
+            userId: this.$store.state.userProfile.user._id,
+            photo: this.photo,
+            edamamId: true,
+          }),
+        });
 
-      let resultsJSON = await results.json();
-      this.recipes = resultsJSON.hits;
-      console.log(resultsJSON);
+        let resultsJSON = await results.json();
+        this.recipes = resultsJSON.hits;
+        console.log(resultsJSON);
+      } else {
+        this.$router.push({ path: "login" });
+      }
     },
   },
 };
@@ -122,12 +164,37 @@ export default {
   }
 }
 
+.recipe-image {
+  width: 80%;
+  margin: 0 auto 30px auto;
+  border: 1px solid rgba($color: #000000, $alpha: 0.25);
+}
+
+.recipe-description {
+  p {
+    @extend %regular-text;
+    background-color: white;
+    padding: 20px;
+  }
+  margin-bottom: 30px;
+}
+
 .recipe-ingredients {
   &_wrapper {
     display: grid;
     grid-template-columns: 1fr;
     gap: 20px;
   }
+}
+
+.recipe-preparation {
+  margin-top: 30px;
+  p {
+    @extend %regular-text;
+    background-color: white;
+    padding: 20px;
+  }
+  margin-bottom: 30px;
 }
 
 .button {

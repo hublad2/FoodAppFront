@@ -33,13 +33,16 @@ const store = new Vuex.Store({
     },
     /* Log in at server and get user token */
     async fetchUser({ commit }, user) {
-      const response = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: user.email, uid: user.uid }),
-      });
+      const response = await fetch(
+        "https://hidden-cliffs-64077.herokuapp.com/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: user.email, uid: user.uid }),
+        }
+      );
 
       const responseJSON = await response.json();
 
@@ -48,7 +51,7 @@ const store = new Vuex.Store({
       commit("setUserProfile", responseJSON);
       commit("setLoginStatus", true);
 
-      router.push("/create");
+      router.push("/entry");
     },
     async signup({ dispatch }, form) {
       const { user } = await fb.auth.createUserWithEmailAndPassword(

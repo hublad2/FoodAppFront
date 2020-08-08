@@ -1,7 +1,12 @@
 <template>
-  <div class="ingredients">
-    <img :src="photo" />
-    <p>{{ description }}</p>
+  <div>
+    <div class="ingredients" v-if="edamamId">
+      <img :src="photo" />
+      <p>{{ description }}</p>
+    </div>
+    <div class="ingredients edamam-false" v-if="!edamamId">
+      <p>{{ description }}</p>
+    </div>
   </div>
 </template>
 
@@ -10,8 +15,12 @@ export default {
   name: "Ingredient",
   props: {
     itemIngredient: {
-      type: Object,
+      type: [Object, String],
       required: true,
+    },
+    edamamId: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {
@@ -20,9 +29,13 @@ export default {
       description: null,
     };
   },
-  mounted() {
-    this.photo = this.itemIngredient.image;
-    this.description = this.itemIngredient.text;
+  created() {
+    if (this.edamamId) {
+      this.photo = this.itemIngredient.image;
+      this.description = this.itemIngredient.text;
+    } else {
+      this.description = this.itemIngredient;
+    }
   },
 };
 </script>
@@ -52,6 +65,12 @@ export default {
     @media screen and(min-width:500px) {
       font-size: 3.5vw;
     }
+  }
+}
+
+.edamam-false {
+  p {
+    padding: 0 20px;
   }
 }
 </style>

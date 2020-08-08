@@ -75,6 +75,7 @@
           class="form-input_preview"
         />
         <button @click="fetchCreateRecipe()" class="button">Zapisz</button>
+        <router-link to="/list" tag="button" class="button">Powrót</router-link>
       </form>
     </section>
   </div>
