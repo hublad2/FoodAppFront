@@ -38,6 +38,9 @@
       <button v-if="!listMode" @click="fetchSaveRecipe()" class="button">
         Zapisz przepis
       </button>
+      <button @click="fetchDeleteRecipe()" class="button">
+        Usuń przepis
+      </button>
     </div>
   </div>
 </template>
@@ -94,6 +97,37 @@ export default {
   },
   methods: {
     async fetchSaveRecipe() {
+      if (this.$store.state.userProfile.token) {
+        //Run only if the user selected image to send
+        let results = await fetch(
+          "https://hidden-cliffs-64077.herokuapp.com/recipes/",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: this.title,
+              ingredients: this.ingredients,
+              description: "",
+              preparation: this.preparation,
+              userId: this.$store.state.userProfile.user._id,
+              photo: this.photo,
+              edamamId: true,
+            }),
+          }
+        );
+
+        let resultsJSON = await results.json();
+        this.recipes = resultsJSON.hits;
+        console.log(resultsJSON);
+      } else {
+        this.$router.push({ path: "login" });
+      }
+    },
+  },
+  async fetchDeleteRecipe() {
       if (this.$store.state.userProfile.token) {
         //Run only if the user selected image to send
         let results = await fetch(
