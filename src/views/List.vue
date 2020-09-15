@@ -23,7 +23,7 @@
       v-if="recipeModalOpen"
       :itemRecipeModal="recipeModalItem"
       :listMode="listMode"
-      @closeRecipeModal="recipeModalOpen = false"
+      @close-recipe-modal="recipeModalOpen = false"
     />
   </div>
 </template>
@@ -96,7 +96,7 @@ export default {
 
   &_results {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 400px));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 300px));
     justify-content: center;
     gap: 60px;
     margin-top: 100px;

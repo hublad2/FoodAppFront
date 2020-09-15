@@ -8,6 +8,10 @@ Food-app-front is a simple, vue based frontend for the food-app. Food-app is int
 - Saving recipes using your own data or provided by [Edamam API](https://developer.edamam.com/)
 - Browsing recipes powered by [Edamam API](https://developer.edamam.com/)
 
+## Todo
+
+- Edit feature for saved recipes
+
 ## Project setup
 
 ```

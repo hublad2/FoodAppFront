@@ -66,7 +66,7 @@
     <RecipeModal
       v-if="recipeModalOpen"
       :itemRecipeModal="recipeModalItem"
-      @closeRecipeModal="recipeModalOpen = false"
+      @close-recipe-modal="recipeModalOpen = false"
     />
   </div>
 </template>

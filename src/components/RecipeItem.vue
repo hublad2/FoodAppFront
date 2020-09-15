@@ -40,8 +40,13 @@ export default {
 @import "../scss/_variables.scss";
 @import "../scss/_extensions.scss";
 .recipe-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   &_image {
-    width: 100%;
+    width: 300px;
+    height: 300px;
   }
 
   &_header {
