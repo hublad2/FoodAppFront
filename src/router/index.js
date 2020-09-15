@@ -52,6 +52,16 @@ const routes = [
     },
   },
   {
+    path: "/update",
+    name: "Update",
+    props: true,
+    component: () =>
+      import(/* webpackChunkName: "update" */ "../views/Update.vue"),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/entry",
     name: "Entry",
     component: () =>
@@ -60,6 +70,7 @@ const routes = [
   {
     path: "/list",
     name: "List",
+    props: true,
     component: () => import(/* webpackChunkName: "list" */ "../views/List.vue"),
     meta: {
       requiresAuth: true,

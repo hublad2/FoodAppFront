@@ -10,6 +10,7 @@ const store = new Vuex.Store({
   state: {
     userProfile: {},
     logged: false,
+    currentRecipe: {},
   },
   mutations: {
     setUserProfile(state, val) {
@@ -17,6 +18,9 @@ const store = new Vuex.Store({
     },
     setLoginStatus(state, val) {
       state.logged = val;
+    },
+    setCurrentRecipe(state, val) {
+      state.currentRecipe = val;
     },
   },
   actions: {
@@ -87,6 +91,9 @@ const store = new Vuex.Store({
       } catch (err) {
         console.log(err);
       }
+    },
+    updateRecipe({ commit }, recipe) {
+      commit("setCurrentRecipe", recipe);
     },
   },
 });

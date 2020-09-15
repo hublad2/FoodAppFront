@@ -41,6 +41,9 @@
       <button @click="fetchDeleteRecipe()" class="button">
         Usuń przepis
       </button>
+      <router-link to="/update" tag="button" class="button"
+        >Edytuj przepis</router-link
+      >
     </div>
   </div>
 </template>
@@ -94,6 +97,8 @@ export default {
       this.preparation = this.itemRecipeModal.preparation;
       this.edamamId = this.itemRecipeModal.edamamId;
     }
+
+    this.updateRecipeState();
   },
   methods: {
     async fetchSaveRecipe() {
@@ -146,6 +151,16 @@ export default {
       } else {
         this.$router.push({ path: "login" });
       }
+    },
+    updateRecipeState() {
+      console.log("Updating store");
+      this.$store.dispatch("updateRecipe", {
+        ingredients: this.ingredients,
+        photo: this.photo,
+        title: this.title,
+        preparation: this.preparation,
+        description: this.description,
+      });
     },
   },
 };
