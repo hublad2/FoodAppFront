@@ -25,6 +25,7 @@
       :listMode="listMode"
       @close-recipe-modal="recipeModalOpen = false"
     />
+    <div v-if="loading" class="lds-dual-ring"></div>
   </div>
 </template>
 
@@ -44,7 +45,12 @@ export default {
       recipeModalItem: null,
       recipeModalOpen: false,
       listMode: true,
+      loading: true,
     };
+  },
+  created() {
+    // Fetch user recipes
+    this.fetchRecipes();
   },
   methods: {
     handleRecipeModalOpen(item) {
@@ -69,11 +75,8 @@ export default {
       let resultsJSON = await results.json();
       this.recipes = resultsJSON;
       console.log(resultsJSON);
+      this.loading = false;
     },
-  },
-  created() {
-    // Fetch user recipes
-    this.fetchRecipes();
   },
 };
 </script>
@@ -157,5 +160,31 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid $colorBackground3;
+  border-color: $colorBackground3 transparent $colorBackground3 transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

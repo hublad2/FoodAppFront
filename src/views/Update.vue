@@ -78,24 +78,19 @@ export default {
   data() {
     return {
       updateForm: {
-        name: "",
         description: "",
         ingredients: [],
         preparations: "",
       },
-      ingredients: [],
-      preparation: null,
       title: null,
-      description: null,
       previewPhoto: null,
       previewOpen: false,
     };
   },
   created() {
-    this.ingredients = this.$store.state.currentRecipe.ingredients;
-    this.preparation = this.$store.state.currentRecipe.preparation;
+    this.updateForm.preparations = this.$store.state.currentRecipe.preparation;
     this.title = this.$store.state.currentRecipe.title;
-    this.description = this.$store.state.currentRecipe.description;
+    this.updateForm.description = this.$store.state.currentRecipe.description;
     this.previewPhoto = this.$store.state.currentRecipe.photo;
     this.previewOpen = true;
   },
@@ -116,6 +111,9 @@ export default {
       );
     });
 
+    this.$store.state.currentRecipe.ingredients.forEach((ingredient) => {
+      ingredients.addTags(ingredient);
+    });
     console.log(ingredients.value);
   },
   methods: {

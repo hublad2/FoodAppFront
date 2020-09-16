@@ -38,10 +38,10 @@
       <button v-if="!listMode" @click="fetchSaveRecipe()" class="button">
         Zapisz przepis
       </button>
-      <button @click="fetchDeleteRecipe()" class="button">
+      <button v-if="listMode" @click="fetchDeleteRecipe()" class="button">
         Usuń przepis
       </button>
-      <router-link to="/update" tag="button" class="button"
+      <router-link v-if="!edamamId" to="/update" tag="button" class="button"
         >Edytuj przepis</router-link
       >
     </div>
@@ -189,11 +189,20 @@ export default {
   padding: 50px 0;
 
   &_header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     @extend %header-text;
     margin-bottom: 50px;
 
+    span {
+      font-size: 2rem;
+    }
+
     i {
       margin-left: 20px;
+      font-size: 4rem;
+      color: orangered;
     }
   }
 

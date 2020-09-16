@@ -15,7 +15,7 @@
             id="keywords1"
           />
         </div>
-        <div class="params-health params-input">
+        <!-- <div class="params-health params-input">
           <input
             class="params-health_input"
             v-model.trim="searchForm.health.sugar"
@@ -34,8 +34,8 @@
           <label class="params-input_label params-health_label" for="health2"
             >Wegetariańskie</label
           >
-        </div>
-        <div class="params-diet params-input">
+        </div> -->
+        <!-- <div class="params-diet params-input">
           <label class="params-input_label" for="diet1">Dieta</label>
           <select
             id="diet1"
@@ -50,7 +50,7 @@
             <option value="low-carb">Mało węglowodanów</option>
             <option value="low-sodium">Mało soli</option>
           </select>
-        </div>
+        </div> -->
       </form>
     </section>
     <button @click="fetchRecipes()" class="button">Wyszukaj</button>
@@ -68,6 +68,7 @@
       :itemRecipeModal="recipeModalItem"
       @close-recipe-modal="recipeModalOpen = false"
     />
+    <div v-if="loading" class="lds-dual-ring"></div>
   </div>
 </template>
 
@@ -94,6 +95,7 @@ export default {
       recipes: [],
       recipeModalItem: null,
       recipeModalOpen: false,
+      loading: false,
     };
   },
   methods: {
@@ -102,6 +104,7 @@ export default {
       this.recipeModalOpen = true;
     },
     async fetchRecipes() {
+      this.loading = true;
       this.recipes = null;
       // Put marked health labels into array of strings
       let healthArray = [];
@@ -127,6 +130,7 @@ export default {
       let resultsJSON = await results.json();
       this.recipes = resultsJSON.hits;
       console.log(resultsJSON);
+      this.loading = false;
     },
   },
 };
@@ -242,5 +246,31 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  margin: 50px auto 0 auto;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid $colorBackground3;
+  border-color: $colorBackground3 transparent $colorBackground3 transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
