@@ -20,7 +20,9 @@
       </div>
       <div class="your_item">
         <i class="fas fa-calendar"></i>
-        <button class="button">Kalendarz</button>
+        <router-link to="/calendar" tag="button" class="button"
+          >Kalendarz</router-link
+        >
       </div>
     </section>
   </div>
