@@ -1,6 +1,6 @@
 <template>
-  <div class="calendar">
-    <div class="calendar-header">
+  <div class="calendar" id="calendar">
+    <!-- <div class="calendar-header">
       <div class="calendar-button calendar-prev"></div>
       <div class="calendar-date-text">Wrzesień 2020</div>
       <div class="calendar-button calendar-next"></div>
@@ -27,17 +27,24 @@
         <div class="calendar-table-inner_cell">1</div>
         <div class="calendar-table-inner_cell">1</div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
+import { Calendar } from "../classes/calendar.js";
+
 export default {
   name: "CalendarComponent",
+  mounted() {
+    let calendarParent = document.querySelector("#calendar");
+    let cal = new Calendar(calendarParent);
+    cal.init();
+  },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "../scss/_variables.scss";
 @import "../scss/_extensions.scss";
 
@@ -49,6 +56,9 @@ export default {
 }
 
 .calendar-header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .calendar-date-text {

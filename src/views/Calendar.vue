@@ -36,7 +36,7 @@ export default {
   flex-direction: column;
   align-items: center;
   min-height: 800px;
-  max-width: 600px;
+  max-width: 1000px;
   padding: 30px 0;
   justify-content: space-evenly;
   margin: 0 auto;
@@ -77,7 +77,7 @@ export default {
     height: 80%;
     width: 90%;
     background-color: $colorBackground2;
-    padding: 10%;
+    padding: 2%;
     max-width: 500px;
     max-height: 600px;
 
