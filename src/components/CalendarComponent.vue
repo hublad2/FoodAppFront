@@ -52,13 +52,14 @@ export default {
   width: 100%;
   display: flex;
   flex-direction: column;
-  border: 1px solid red;
+  font-family: sans-serif;
 }
 
 .calendar-header {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  padding: 10px;
 }
 
 .calendar-date-text {
@@ -67,28 +68,49 @@ export default {
 }
 
 .calendar-button {
+  color: #333;
+  font-family: sans-serif;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 1.8rem;
 }
 
 .calendar-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   text-align: center;
+  font-family: sans-serif;
+  gap: 5px;
 
   &_day {
-    font-size: 2rem;
-    border: 1px solid gray;
+    font-size: 4vw;
+    padding: 2vw;
   }
 }
 
 .calendar-table-inner {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  color: $colorFont2;
+  gap: 5px;
 
   &_cell {
     text-align: center;
-    border: 1px solid green;
-    padding: 20px;
+    padding: 3.5vw;
     font-size: 2.5vw;
+    background: $colorBackground1;
+  }
+
+  .active-cell .active-cell:hover {
+    cursor: pointer;
+  }
+
+  .active-cell:hover {
+    background: #d1ebfd;
+  }
+
+  .empty-cell {
+    background: #fff;
   }
 }
 </style>

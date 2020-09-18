@@ -59,7 +59,7 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "calendar" */ "../views/Calendar.vue"),
     meta: {
-      requiresAuth: false,
+      requiresAuth: true,
     },
   },
   {

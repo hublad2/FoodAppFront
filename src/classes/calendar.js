@@ -58,15 +58,28 @@ export class Calendar {
     // Append empty cells
     for (let i = 0; i < firstMonthDay - 1; i++) {
       const emptyCell = document.createElement("div");
-      emptyCell.classList.add("calendar-table-inner_cell");
+      emptyCell.classList.add("calendar-table-inner_cell", "empty-cell");
       this.tableInner.appendChild(emptyCell);
     }
 
     // Append days cells
     for (let i = 0; i < daysInMonth; i++) {
       const dayCell = document.createElement("div");
-      dayCell.classList.add("calendar-table-inner_cell");
+      dayCell.classList.add("calendar-table-inner_cell", "active-cell");
       dayCell.innerHTML = i + 1;
+
+      dayCell.addEventListener("click", () => {
+        const event = new CustomEvent("date-selected", {
+          bubbles: true,
+          detail: {
+            year: this.year,
+            month: this.month,
+            day: dayCell.innerHTML,
+          },
+        });
+        this.parent.dispatchEvent(event);
+      });
+
       this.tableInner.appendChild(dayCell);
     }
   }
