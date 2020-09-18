@@ -18,9 +18,10 @@
       @fetch-complete="listMounted"
       v-if="selected"
       class="calendar-wrapper_recipe-list"
+      ref="recipeList"
     />
     <div v-if="loading" class="lds-dual-ring"></div>
-    <button v-if="selected && !loading" class="button">
+    <button @click="clickSave" v-if="selected && !loading" class="button">
       Dodaj przepis do dnia
     </button>
     <router-link to="/entry" tag="button" class="button">Powrót</router-link>
@@ -58,6 +59,9 @@ export default {
     },
     listMounted() {
       this.loading = false;
+    },
+    clickSave() {
+      this.$refs.recipeList.fetchSchedule(this.dateSelected);
     },
   },
   mounted() {

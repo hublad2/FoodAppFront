@@ -2,16 +2,17 @@
   <div @click="changeDisplay" class="recipe-select">
     <div class="recipe-select_initial">
       <div class="recipe-modal">
-        <img :src="recipes[0].photo" alt="" />
-        <h3>{{ recipes[0].name }}</h3>
+        <img :src="frontRecipe.photo" alt="" />
+        <h3>{{ frontRecipe.name }}</h3>
       </div>
       <i class="fas fa-angle-down"></i>
     </div>
     <div v-if="displayList" class="recipe-select_list">
       <div
         v-for="recipe in recipes.slice(1)"
-        :key="recipe"
+        :key="recipe._id"
         class="recipe-modal"
+        @click="updateFrontRecipe(recipe)"
       >
         <img :src="recipe.photo" alt="" />
         <h3>{{ recipe.name }}</h3>
@@ -27,10 +28,12 @@ export default {
     return {
       displayList: false,
       recipes: [],
+      frontRecipe: null,
     };
   },
-  mounted() {
-    this.fetchRecipes();
+  async mounted() {
+    await this.fetchRecipes();
+    this.frontRecipe = this.recipes[0];
   },
   methods: {
     changeDisplay() {
@@ -55,6 +58,26 @@ export default {
       this.recipes = resultsJSON;
       console.log(resultsJSON);
       this.$emit("fetch-complete");
+    },
+    async fetchSchedule(date) {
+      let results = await fetch("http://localhost:3000/schedules", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: this.$store.state.userProfile.user._id,
+          recipeId: this.frontRecipe._id,
+          date: new Date(date.year, date.month - 1, date.day),
+        }),
+      });
+      let resultsJSON = await results.json();
+      this.recipes = resultsJSON;
+      console.log(resultsJSON);
+    },
+    updateFrontRecipe(recipe) {
+      this.frontRecipe = recipe;
     },
   },
 };
