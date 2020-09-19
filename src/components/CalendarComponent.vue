@@ -36,10 +36,35 @@ import { Calendar } from "../classes/calendar.js";
 
 export default {
   name: "CalendarComponent",
-  mounted() {
+  data() {
+    return {
+      schedule: null,
+    };
+  },
+  async mounted() {
+    await this.fetchScheduleGet();
     let calendarParent = document.querySelector("#calendar");
-    let cal = new Calendar(calendarParent);
+    let cal = new Calendar(calendarParent, this.schedule);
     cal.init();
+  },
+  methods: {
+    async fetchScheduleGet() {
+      let results = await fetch("http://localhost:3000/schedules", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: this.$store.state.userProfile.user._id,
+        }),
+      });
+      let resultsJSON = await results.json();
+      this.schedule = resultsJSON[0].dates;
+      this.schedule.forEach((recipe) => {
+        recipe.date = new Date(recipe.date);
+      });
+    },
   },
 };
 </script>
@@ -112,5 +137,9 @@ export default {
   .empty-cell {
     background: #fff;
   }
+}
+
+.recipe-active {
+  background: rgba($color: #17b978, $alpha: 0.3);
 }
 </style>

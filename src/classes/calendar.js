@@ -1,5 +1,5 @@
 export class Calendar {
-  constructor(parent) {
+  constructor(parent, schedule) {
     this.now = new Date();
     this.day = this.now.getDate();
     this.month = this.now.getMonth();
@@ -9,6 +9,8 @@ export class Calendar {
     this.calendarWrapper = null;
     this.calendarHeader = null;
     this.calendarTable = null;
+    this.schedule = schedule;
+    console.log(this.schedule);
   }
 
   createButtons() {
@@ -21,6 +23,7 @@ export class Calendar {
       }
       while (this.tableInner.firstChild)
         this.tableInner.removeChild(this.tableInner.lastChild);
+      this.filterMonth();
       this.createCalendarTable();
       this.displayDate();
     });
@@ -34,8 +37,21 @@ export class Calendar {
       }
       while (this.tableInner.firstChild)
         this.tableInner.removeChild(this.tableInner.lastChild);
+      this.filterMonth();
       this.createCalendarTable();
       this.displayDate();
+    });
+  }
+
+  filterMonth() {
+    this.activeMonthDates = [];
+    this.activeMonthRecipes = [];
+
+    this.schedule.forEach((recipe) => {
+      if (recipe.date.getMonth() === this.month) {
+        this.activeMonthDates.push(recipe.date.getDate());
+        this.activeMonthRecipes.push(recipe);
+      }
     });
   }
 
@@ -68,16 +84,40 @@ export class Calendar {
       dayCell.classList.add("calendar-table-inner_cell", "active-cell");
       dayCell.innerHTML = i + 1;
 
+      this.activeMonthDates.forEach((day) => {
+        if (i + 1 === day) dayCell.classList.add("recipe-active");
+      });
+
       dayCell.addEventListener("click", () => {
-        const event = new CustomEvent("date-selected", {
-          bubbles: true,
-          detail: {
-            year: this.year,
-            month: this.month,
-            day: dayCell.innerHTML,
-          },
-        });
-        this.parent.dispatchEvent(event);
+        if (dayCell.classList.contains("recipe-active")) {
+          let activeRecipes = [];
+
+          this.activeMonthRecipes.forEach((recipe) => {
+            if (recipe.date.getDate() === i + 1)
+              activeRecipes.push(recipe.recipe);
+          });
+
+          const event = new CustomEvent("date-selected", {
+            bubbles: true,
+            detail: {
+              year: this.year,
+              month: this.month,
+              day: dayCell.innerHTML,
+              recipes: activeRecipes,
+            },
+          });
+          this.parent.dispatchEvent(event);
+        } else {
+          const event = new CustomEvent("date-selected", {
+            bubbles: true,
+            detail: {
+              year: this.year,
+              month: this.month,
+              day: dayCell.innerHTML,
+            },
+          });
+          this.parent.dispatchEvent(event);
+        }
       });
 
       this.tableInner.appendChild(dayCell);
@@ -142,8 +182,9 @@ export class Calendar {
 
   init() {
     this.initUI();
-    this.createCalendarTable();
     this.createButtons();
+    this.filterMonth();
+    this.createCalendarTable();
     this.displayDate();
   }
 }

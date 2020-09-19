@@ -56,11 +56,10 @@ export default {
 
       let resultsJSON = await results.json();
       this.recipes = resultsJSON;
-      console.log(resultsJSON);
       this.$emit("fetch-complete");
     },
     async fetchSchedule(date) {
-      let results = await fetch("http://localhost:3000/schedules", {
+      let results = await fetch("http://localhost:3000/schedules/add", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${this.$store.state.userProfile.token}`,
@@ -74,7 +73,6 @@ export default {
       });
       let resultsJSON = await results.json();
       this.recipes = resultsJSON;
-      console.log(resultsJSON);
     },
     updateFrontRecipe(recipe) {
       this.frontRecipe = recipe;

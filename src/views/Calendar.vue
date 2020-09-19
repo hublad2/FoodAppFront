@@ -11,9 +11,30 @@
     </div>
     <h2 v-if="selected" class="header-recipes">
       {{
-        dateSelected.year + "." + dateSelected.month + "." + dateSelected.day
+        "Twoje przepisy na dzień: " +
+          dateSelected.year +
+          "." +
+          dateSelected.month +
+          "." +
+          dateSelected.day
       }}
     </h2>
+    <section class="calendar-wrapper_day-list" v-if="fetchedRecipes">
+      <RecipeItem
+        v-for="recipe in fetchedRecipes"
+        :itemRecipe="recipe[0]"
+        :edamamId="recipe.edamamId"
+        :key="recipe._id"
+        :listMode="listMode"
+        @click.native="handleRecipeModalOpen(recipe)"
+      />
+    </section>
+    <RecipeModal
+      v-if="recipeModalOpen"
+      :itemRecipeModal="recipeModalItem"
+      :listMode="listMode"
+      @close-recipe-modal="recipeModalOpen = false"
+    />
     <RecipeList
       @fetch-complete="listMounted"
       v-if="selected"
@@ -31,27 +52,54 @@
 <script>
 import CalendarComponent from "@/components/CalendarComponent.vue";
 import RecipeList from "@/components/RecipeList.vue";
+import RecipeItem from "@/components/RecipeItem.vue";
+import RecipeModal from "@/components/RecipeModal.vue";
 
 export default {
   name: "Calendar",
   components: {
     CalendarComponent,
     RecipeList,
+    RecipeItem,
+    RecipeModal,
   },
   data() {
     return {
       dateSelected: Date,
       selected: false,
       loading: false,
+      fetchedRecipes: [],
+      listMode: true,
+      recipeModalItem: null,
+      recipeModalOpen: false,
     };
   },
+  mounted() {
+    const calendar = document.querySelector("#calendar");
+    calendar.addEventListener("date-selected", (info) => {
+      this.showDate(info.detail);
+    });
+  },
   methods: {
+    handleRecipeModalOpen(item) {
+      this.recipeModalItem = item[0];
+      this.recipeModalOpen = true;
+    },
     showDate(date) {
+      console.log(date);
+
+      this.fetchedRecipes = [];
+
       this.dateSelected = {
         year: date.year,
         month: date.month + 1,
         day: date.day,
       };
+      if (date.recipes) {
+        date.recipes.forEach((recipeId) => {
+          this.fetchRecipeById(recipeId);
+        });
+      }
       if (!this.selected) {
         this.loading = true;
         this.selected = true;
@@ -63,12 +111,21 @@ export default {
     clickSave() {
       this.$refs.recipeList.fetchSchedule(this.dateSelected);
     },
-  },
-  mounted() {
-    const calendar = document.querySelector("#calendar");
-    calendar.addEventListener("date-selected", (info) => {
-      this.showDate(info.detail);
-    });
+    async fetchRecipeById(recipe) {
+      let results = await fetch("http://localhost:3000/recipes/get", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          recipeId: recipe,
+        }),
+      });
+
+      let resultsJSON = await results.json();
+      this.fetchedRecipes.push(resultsJSON);
+    },
   },
 };
 </script>
@@ -139,12 +196,24 @@ export default {
   .header-recipes {
     text-align: center;
     @extend %green-text;
-    font-size: 4rem;
+    font-size: 3rem;
     margin-top: 30px;
   }
 
   &_recipe-list {
     margin-top: 30px;
+  }
+
+  &_day-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 300px));
+    justify-content: center;
+    gap: 60px;
+    margin-top: 50px;
+
+    img {
+      width: 100%;
+    }
   }
 }
 
