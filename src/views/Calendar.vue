@@ -33,6 +33,7 @@
       v-if="recipeModalOpen"
       :itemRecipeModal="recipeModalItem"
       :listMode="listMode"
+      :calendarMode="calendarMode"
       @close-recipe-modal="recipeModalOpen = false"
     />
     <RecipeList
@@ -70,6 +71,7 @@ export default {
       loading: false,
       fetchedRecipes: [],
       listMode: true,
+      calendarMode: true,
       recipeModalItem: null,
       recipeModalOpen: false,
     };
@@ -85,19 +87,19 @@ export default {
       this.recipeModalItem = item[0];
       this.recipeModalOpen = true;
     },
-    showDate(date) {
-      console.log(date);
+    showDate(detail) {
+      console.log(detail);
 
       this.fetchedRecipes = [];
-
       this.dateSelected = {
-        year: date.year,
-        month: date.month + 1,
-        day: date.day,
+        year: detail.year,
+        month: detail.month + 1,
+        day: detail.day,
       };
-      if (date.recipes) {
-        date.recipes.forEach((recipeId) => {
-          this.fetchRecipeById(recipeId);
+
+      if (detail.dates) {
+        detail.dates.forEach((date) => {
+          this.fetchRecipeById(date.recipe, date.dateId);
         });
       }
       if (!this.selected) {
@@ -111,7 +113,7 @@ export default {
     clickSave() {
       this.$refs.recipeList.fetchSchedule(this.dateSelected);
     },
-    async fetchRecipeById(recipe) {
+    async fetchRecipeById(recipe, dateId) {
       let results = await fetch("http://localhost:3000/recipes/get", {
         method: "POST",
         headers: {
@@ -124,7 +126,9 @@ export default {
       });
 
       let resultsJSON = await results.json();
+      resultsJSON[0].dateId = dateId;
       this.fetchedRecipes.push(resultsJSON);
+      console.log(resultsJSON);
     },
   },
 };

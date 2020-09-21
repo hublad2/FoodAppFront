@@ -90,11 +90,16 @@ export class Calendar {
 
       dayCell.addEventListener("click", () => {
         if (dayCell.classList.contains("recipe-active")) {
-          let activeRecipes = [];
+          let activeRecipes = {
+            dates: [],
+          };
 
           this.activeMonthRecipes.forEach((recipe) => {
             if (recipe.date.getDate() === i + 1)
-              activeRecipes.push(recipe.recipe);
+              activeRecipes.dates.push({
+                recipe: recipe.recipe,
+                dateId: recipe._id,
+              });
           });
 
           const event = new CustomEvent("date-selected", {
@@ -103,7 +108,7 @@ export class Calendar {
               year: this.year,
               month: this.month,
               day: dayCell.innerHTML,
-              recipes: activeRecipes,
+              dates: activeRecipes.dates,
             },
           });
           this.parent.dispatchEvent(event);

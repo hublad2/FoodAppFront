@@ -41,6 +41,9 @@
       <button v-if="listMode" @click="fetchDeleteRecipe()" class="button">
         Usuń przepis
       </button>
+      <button v-if="calendarMode" @click="fetchDeleteDate()" class="button">
+        Usuń przepis z dnia
+      </button>
       <router-link v-if="!edamamId" to="/update" tag="button" class="button"
         >Edytuj przepis</router-link
       >
@@ -65,6 +68,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    calendarMode: {
+      type: Boolean,
+      default: false,
+    },
     edamamId: {
       type: Boolean,
       default: true,
@@ -78,6 +85,7 @@ export default {
         preparation: null,
         title: null,
         description: null,
+        dateId: null,
       },
       recipes: [],
     };
@@ -97,6 +105,8 @@ export default {
       this.preparation = this.itemRecipeModal.preparation;
       this.edamamId = this.itemRecipeModal.edamamId;
     }
+
+    if (this.calendarMode) this.dateId = this.itemRecipeModal.dateId;
 
     this.updateRecipeState();
   },
@@ -141,6 +151,28 @@ export default {
           },
           body: JSON.stringify({
             name: this.title,
+          }),
+        });
+
+        let resultsJSON = await results.json();
+
+        if (resultsJSON) this.$emit("close-recipe-modal");
+        console.log(resultsJSON);
+      } else {
+        this.$router.push({ path: "login" });
+      }
+    },
+    async fetchDeleteDate() {
+      if (this.$store.state.userProfile.token) {
+        let results = await fetch("http://localhost:3000/schedules/remove", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: this.$store.state.userProfile.user._id,
+            dateId: this.dateId,
           }),
         });
 
