@@ -7,7 +7,11 @@
       Kliknij na dzień i dodaj przepis
     </h2>
     <div class="calendar-wrapper_list">
-      <CalendarComponent />
+      <CalendarComponent
+        @calendar-initiated.native="updateFetchedRecipes"
+        @date-selected.native="showDate"
+        :key="calendarKey"
+      />
     </div>
     <h2 v-if="selected" class="header-recipes">
       {{
@@ -34,10 +38,11 @@
       :itemRecipeModal="recipeModalItem"
       :listMode="listMode"
       :calendarMode="calendarMode"
-      @close-recipe-modal="recipeModalOpen = false"
+      @close-recipe-modal="closeAndRefreshModal"
     />
     <RecipeList
       @fetch-complete="listMounted"
+      @fetch-schedule-complete="updateCalendar"
       v-if="selected"
       class="calendar-wrapper_recipe-list"
       ref="recipeList"
@@ -74,31 +79,31 @@ export default {
       calendarMode: true,
       recipeModalItem: null,
       recipeModalOpen: false,
+      calendarKey: 0,
+      currentDayDetail: null,
     };
   },
-  mounted() {
-    const calendar = document.querySelector("#calendar");
-    calendar.addEventListener("date-selected", (info) => {
-      this.showDate(info.detail);
-    });
-  },
+  mounted() {},
   methods: {
+    kekw() {
+      console.log("kekw");
+    },
     handleRecipeModalOpen(item) {
       this.recipeModalItem = item[0];
       this.recipeModalOpen = true;
     },
-    showDate(detail) {
-      console.log(detail);
+    showDate(e) {
+      this.currentDayDetail = e.detail;
 
       this.fetchedRecipes = [];
       this.dateSelected = {
-        year: detail.year,
-        month: detail.month + 1,
-        day: detail.day,
+        year: this.currentDayDetail.year,
+        month: this.currentDayDetail.month + 1,
+        day: this.currentDayDetail.day,
       };
 
-      if (detail.dates) {
-        detail.dates.forEach((date) => {
+      if (this.currentDayDetail.dates) {
+        this.currentDayDetail.dates.forEach((date) => {
           this.fetchRecipeById(date.recipe, date.dateId);
         });
       }
@@ -128,7 +133,19 @@ export default {
       let resultsJSON = await results.json();
       resultsJSON[0].dateId = dateId;
       this.fetchedRecipes.push(resultsJSON);
-      console.log(resultsJSON);
+    },
+    updateFetchedRecipes() {
+      if (this.calendarKey !== 0) {
+        const dayCell = document.getElementById(this.currentDayDetail.day - 1);
+        dayCell.click();
+      }
+    },
+    closeAndRefreshModal() {
+      this.recipeModalOpen = false;
+      this.updateCalendar();
+    },
+    updateCalendar() {
+      this.calendarKey += 1;
     },
   },
 };

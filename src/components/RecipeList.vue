@@ -72,7 +72,8 @@ export default {
         }),
       });
       let resultsJSON = await results.json();
-      this.recipes = resultsJSON;
+      console.log(resultsJSON);
+      this.$emit("fetch-schedule-complete");
     },
     updateFrontRecipe(recipe) {
       this.frontRecipe = recipe;

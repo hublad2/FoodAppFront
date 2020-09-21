@@ -3,10 +3,12 @@ import Vuex from "vuex";
 import * as fb from "../firebase";
 import * as firebase from "firebase/app";
 import router from "../router";
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
+  plugins: [createPersistedState()],
   state: {
     userProfile: {},
     logged: false,

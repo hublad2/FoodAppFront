@@ -81,6 +81,7 @@ export class Calendar {
     // Append days cells
     for (let i = 0; i < daysInMonth; i++) {
       const dayCell = document.createElement("div");
+      dayCell.id = i;
       dayCell.classList.add("calendar-table-inner_cell", "active-cell");
       dayCell.innerHTML = i + 1;
 
@@ -191,5 +192,7 @@ export class Calendar {
     this.filterMonth();
     this.createCalendarTable();
     this.displayDate();
+    const event = new CustomEvent("calendar-initiated");
+    this.parent.dispatchEvent(event);
   }
 }
