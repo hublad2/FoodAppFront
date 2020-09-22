@@ -54,6 +54,7 @@
       </form>
     </section>
     <button @click="fetchRecipes()" class="button">Wyszukaj</button>
+    <router-link to="/entry" tag="button" class="button">Powrót</router-link>
     <section class="search-wrapper_results" v-if="recipes">
       <RecipeItem
         v-for="item in recipes"
@@ -68,7 +69,6 @@
       @close-recipe-modal="recipeModalOpen = false"
     />
     <div v-if="loading" class="lds-dual-ring"></div>
-    <router-link to="/entry" tag="button" class="button">Powrót</router-link>
   </div>
 </template>
 
