@@ -38,7 +38,11 @@
       <button v-if="!listMode" @click="fetchSaveRecipe()" class="button">
         Zapisz przepis
       </button>
-      <button v-if="listMode" @click="fetchDeleteRecipe()" class="button">
+      <button
+        v-if="listMode && !calendarMode"
+        @click="fetchDeleteRecipe()"
+        class="button"
+      >
         Usuń przepis
       </button>
       <button v-if="calendarMode" @click="fetchDeleteDate()" class="button">
