@@ -74,8 +74,12 @@
           id="previewImage"
           class="form-input_preview"
         />
-        <button @click="fetchCreateRecipe()" class="button">Zapisz</button>
-        <router-link to="/list" tag="button" class="button">Powrót</router-link>
+        <button @click="fetchCreateRecipe()" class="button-create">
+          Zapisz
+        </button>
+        <router-link to="/list" tag="button" class="button-create"
+          >Powrót</router-link
+        >
       </form>
     </section>
   </div>
@@ -218,13 +222,17 @@ export default {
   &_header {
     @extend %header-text;
 
+    span {
+      font-size: 2.6rem;
+    }
+
     i {
       margin-right: 20px;
     }
   }
 }
 
-button {
+.button-create {
   @extend %green-button;
   width: 100%;
   margin: 50px auto 0 auto;

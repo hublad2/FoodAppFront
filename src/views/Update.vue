@@ -3,7 +3,6 @@
     <header class="create-wrapper_header">
       <i class="fas fa-scroll"></i>
       <span>Edytuj przepis</span>
-      <span>{{ title }}</span>
     </header>
     <section class="create-wrapper_form">
       <form @submit.prevent class="form">
@@ -62,8 +61,12 @@
           id="previewImage"
           class="form-input_preview"
         />
-        <button @click="fetchUpdateRecipe()" class="button">Zapisz</button>
-        <router-link to="/list" tag="button" class="button">Powrót</router-link>
+        <button @click="fetchUpdateRecipe()" class="button-update">
+          Zapisz
+        </button>
+        <router-link to="/list" tag="button" class="button-update"
+          >Powrót</router-link
+        >
       </form>
     </section>
   </div>
@@ -186,7 +189,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../scss/_variables.scss";
 @import "../scss/_extensions.scss";
 
@@ -207,13 +210,17 @@ export default {
   &_header {
     @extend %header-text;
 
+    span {
+      font-size: 2.6rem;
+    }
+
     i {
       margin-right: 20px;
     }
   }
 }
 
-button {
+.button-update {
   @extend %green-button;
   width: 100%;
   margin: 50px auto 0 auto;

@@ -128,13 +128,10 @@ export default {
     margin-top: 30px;
     width: 260px;
 
-    @media screen and (min-width: 350px) {
-      width: 40vw;
-      font-size: 2.5rem;
-    }
-
     @media screen and (min-width: 750px) {
       text-align: left;
+      width: 40vw;
+      font-size: 2.5rem;
     }
   }
 

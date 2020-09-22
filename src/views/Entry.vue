@@ -8,7 +8,7 @@
       <section class="entry-wrapper_search your">
         <div class="your_item">
           <i class="fas fa-search"></i>
-          <router-link to="/search" tag="button" class="button"
+          <router-link to="/search" tag="button" class="button-entry"
             >Wyszukaj</router-link
           >
         </div>
@@ -17,13 +17,13 @@
       <section class="entry-wrapper_your your">
         <div class="your_item">
           <i class="fas fa-scroll"></i>
-          <router-link to="/list" tag="button" class="button"
+          <router-link to="/list" tag="button" class="button-entry"
             >Lista</router-link
           >
         </div>
         <div class="your_item">
           <i class="fas fa-calendar"></i>
-          <router-link to="/calendar" tag="button" class="button"
+          <router-link to="/calendar" tag="button" class="button-entry"
             >Kalendarz</router-link
           >
         </div>
@@ -153,7 +153,7 @@ export default {
   }
 }
 
-.button {
+.button-entry {
   @extend %green-button;
   width: 100%;
   display: flex;
