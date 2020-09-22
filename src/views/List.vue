@@ -24,6 +24,7 @@
       :itemRecipeModal="recipeModalItem"
       :listMode="listMode"
       @close-recipe-modal="recipeModalOpen = false"
+      @close-recipe-modal-delete="updateList"
     />
     <div v-if="loading" class="lds-dual-ring"></div>
   </div>
@@ -76,6 +77,10 @@ export default {
       this.recipes = resultsJSON;
       console.log(resultsJSON);
       this.loading = false;
+    },
+    updateList() {
+      this.recipeModalOpen = false;
+      this.fetchRecipes();
     },
   },
 };

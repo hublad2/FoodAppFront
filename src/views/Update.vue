@@ -156,24 +156,28 @@ export default {
       if (this.checkIfOkToSend()) {
         const dataUrl = this.runImg();
 
-        let results = await fetch("http://localhost:3000/recipes/update", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${this.$store.state.userProfile.token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: this.title,
-            description: this.updateForm.description,
-            ingredients: this.updateForm.ingredients,
-            preparation: this.updateForm.preparations,
-            photo: dataUrl,
-            userId: this.$store.state.userProfile.user._id,
-          }),
-        });
-        console.log(results);
-        let resultsJSON = await results.json();
-        console.log(resultsJSON);
+        try {
+          let results = await fetch("http://localhost:3000/recipes/update", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: this.title,
+              description: this.updateForm.description,
+              ingredients: this.updateForm.ingredients,
+              preparation: this.updateForm.preparations,
+              photo: dataUrl,
+              userId: this.$store.state.userProfile.user._id,
+            }),
+          });
+          let resultsJSON = await results.json();
+          console.log(resultsJSON);
+        } catch (err) {
+          alert("Something went wrong");
+          console.log(err);
+        }
       } else {
         alert("Wypelnij Składniki");
       }
@@ -194,6 +198,11 @@ export default {
   max-width: 80%;
   min-height: 800px;
   padding: 50px 0;
+
+  @media screen and (min-width: 750px) {
+    max-width: 1000px;
+    padding: 50px;
+  }
 
   &_header {
     @extend %header-text;

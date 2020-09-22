@@ -147,21 +147,25 @@ export default {
     },
     async fetchDeleteRecipe() {
       if (this.$store.state.userProfile.token) {
-        let results = await fetch("http://localhost:3000/recipes/remove", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${this.$store.state.userProfile.token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: this.title,
-          }),
-        });
+        try {
+          let results = await fetch("http://localhost:3000/recipes/remove", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: this.title,
+            }),
+          });
 
-        let resultsJSON = await results.json();
-
-        if (resultsJSON) this.$emit("close-recipe-modal");
-        console.log(resultsJSON);
+          let resultsJSON = await results.json();
+          if (resultsJSON) this.$emit("close-recipe-modal-delete");
+          console.log(resultsJSON);
+        } catch (err) {
+          alert("Something went wrong");
+          console.log(err);
+        }
       } else {
         this.$router.push({ path: "login" });
       }

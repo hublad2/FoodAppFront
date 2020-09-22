@@ -117,7 +117,6 @@ export default {
     });
 
     ingredients.addTags("Składnik");
-    console.log(ingredients.value);
   },
   methods: {
     checkIfOkToSend() {
@@ -163,30 +162,33 @@ export default {
           (ingredient) => ingredient != "Składnik"
         );
 
-        console.log(updatedIngredients);
-
-        let results = await fetch(
-          "https://hidden-cliffs-64077.herokuapp.com/recipes/",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${this.$store.state.userProfile.token}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: this.createForm.name,
-              ingredients: updatedIngredients,
-              description: this.createForm.description,
-              preparation: this.createForm.preparations,
-              userId: this.$store.state.userProfile.user._id,
-              photo: dataUrl,
-              edamamId: false,
-            }),
-          }
-        );
-        console.log(results);
-        let resultsJSON = await results.json();
-        console.log(resultsJSON);
+        try {
+          let results = await fetch(
+            "https://hidden-cliffs-64077.herokuapp.com/recipes/",
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: this.createForm.name,
+                ingredients: updatedIngredients,
+                description: this.createForm.description,
+                preparation: this.createForm.preparations,
+                userId: this.$store.state.userProfile.user._id,
+                photo: dataUrl,
+                edamamId: false,
+              }),
+            }
+          );
+          let response = await results.json();
+          console.log(response);
+          this.$router.push("List");
+        } catch (err) {
+          alert("Something went wrong");
+          console.log(err);
+        }
       } else {
         alert("Wypelnij Nazwę i Składniki");
       }
@@ -207,6 +209,11 @@ export default {
   max-width: 80%;
   min-height: 800px;
   padding: 50px 0;
+
+  @media screen and (min-width: 750px) {
+    max-width: 1000px;
+    padding: 50px;
+  }
 
   &_header {
     @extend %header-text;
