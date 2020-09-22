@@ -1,30 +1,35 @@
 <template>
-  <div class="entry-wrapper">
-    <i class="fas fa-egg entry-wrapper_header-icon"></i>
-    <header class="entry-wrapper_header">
-      Kuchnio zarządzacz
-    </header>
-    <section class="entry-wrapper_search your">
-      <div class="your_item">
-        <i class="fas fa-search"></i>
-        <router-link to="/search" tag="button" class="button"
-          >Wyszukaj</router-link
-        >
-      </div>
-    </section>
-    <div class="entry-wrapper_spacer"><span>Twoje przepisy</span></div>
-    <section class="entry-wrapper_your your">
-      <div class="your_item">
-        <i class="fas fa-scroll"></i>
-        <router-link to="/list" tag="button" class="button">Lista</router-link>
-      </div>
-      <div class="your_item">
-        <i class="fas fa-calendar"></i>
-        <router-link to="/calendar" tag="button" class="button"
-          >Kalendarz</router-link
-        >
-      </div>
-    </section>
+  <div class="entry-bg-wrapper">
+    <div class="entry-wrapper">
+      <i class="fas fa-egg entry-wrapper_header-icon"></i>
+      <header class="entry-wrapper_header">
+        Kuchnio zarządzacz
+      </header>
+      <section class="entry-wrapper_search your">
+        <div class="your_item">
+          <i class="fas fa-search"></i>
+          <router-link to="/search" tag="button" class="button"
+            >Wyszukaj</router-link
+          >
+        </div>
+      </section>
+      <div class="entry-wrapper_spacer"><span>Twoje przepisy</span></div>
+      <section class="entry-wrapper_your your">
+        <div class="your_item">
+          <i class="fas fa-scroll"></i>
+          <router-link to="/list" tag="button" class="button"
+            >Lista</router-link
+          >
+        </div>
+        <div class="your_item">
+          <i class="fas fa-calendar"></i>
+          <router-link to="/calendar" tag="button" class="button"
+            >Kalendarz</router-link
+          >
+        </div>
+      </section>
+    </div>
+    <div class="background-entry"></div>
   </div>
 </template>
 
@@ -38,6 +43,20 @@ export default {
 @import "../scss/_variables.scss";
 @import "../scss/_extensions.scss";
 
+.entry-bg-wrapper {
+  @media screen and (min-width: 750px) {
+    display: flex;
+    height: 100vh;
+  }
+
+  .background-entry {
+    @media screen and (min-width: 750px) {
+      flex: 1;
+      background-color: $colorBackground3;
+    }
+  }
+}
+
 .entry-wrapper {
   display: flex;
   flex-direction: column;
@@ -50,14 +69,30 @@ export default {
     padding: 30px 30px;
   }
 
+  @media screen and (min-width: 750px) {
+    width: 750px;
+    margin: 0 50px;
+    justify-content: center;
+  }
+
   &_header {
     @extend %header-text;
     margin-top: 30px;
+
+    @media screen and (min-width: 750px) {
+      font-size: 6rem;
+      width: 400px;
+      margin: 60px auto 20px auto;
+    }
   }
 
   i {
     color: $colorFont1;
     text-align: center;
+
+    @media screen and (min-width: 750px) {
+      font-size: 6rem;
+    }
   }
 
   &_header-icon {
@@ -74,6 +109,10 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: space-evenly;
+    }
+
+    @media screen and (min-width: 750px) {
+      margin-bottom: 200px;
     }
   }
 

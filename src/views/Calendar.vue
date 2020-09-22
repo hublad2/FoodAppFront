@@ -206,6 +206,12 @@ export default {
     box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.1);
     margin-top: 30px;
 
+    @media screen and (min-width: 750px) {
+      width: 100%;
+      max-height: 60%;
+      margin-top: 60px;
+    }
+
     ul {
       height: 100%;
       display: flex;
@@ -219,6 +225,10 @@ export default {
     @extend %green-text;
     font-size: 3rem;
     margin-top: 30px;
+
+    @media screen and (min-width: 750px) {
+      margin-top: 60px;
+    }
   }
 
   &_recipe-list {
@@ -226,8 +236,9 @@ export default {
   }
 
   &_day-list {
+    width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 300px));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 300px));
     justify-content: center;
     gap: 60px;
     margin-top: 50px;

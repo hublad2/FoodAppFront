@@ -110,6 +110,11 @@ export default {
   &_day {
     font-size: 4vw;
     padding: 2vw;
+
+    @media screen and (min-width: 1000px) {
+      font-size: 3rem;
+      padding: 30px;
+    }
   }
 }
 
@@ -124,6 +129,11 @@ export default {
     padding: 3.5vw;
     font-size: 2.5vw;
     background: $colorBackground1;
+
+    @media screen and (min-width: 1000px) {
+      font-size: 3rem;
+      padding: 40px;
+    }
   }
 
   .active-cell .active-cell:hover {
