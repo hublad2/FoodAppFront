@@ -54,7 +54,6 @@
       </form>
     </section>
     <button @click="fetchRecipes()" class="button">Wyszukaj</button>
-    <router-link to="/entry" tag="button" class="button">Powrót</router-link>
     <section class="search-wrapper_results" v-if="recipes">
       <RecipeItem
         v-for="item in recipes"
@@ -69,6 +68,7 @@
       @close-recipe-modal="recipeModalOpen = false"
     />
     <div v-if="loading" class="lds-dual-ring"></div>
+    <router-link to="/entry" tag="button" class="button">Powrót</router-link>
   </div>
 </template>
 
@@ -147,6 +147,7 @@ export default {
   max-width: 80%;
   min-height: 800px;
   padding: 50px 0;
+  align-items: center;
 
   &_header {
     @extend %header-text;
@@ -154,10 +155,11 @@ export default {
 
   &_results {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 400px));
+    grid-template-columns: repeat(auto-fit, minmax(120px, 300px));
     justify-content: center;
     gap: 60px;
     margin-top: 100px;
+    max-width: 70vw;
 
     img {
       width: 100%;
@@ -169,6 +171,14 @@ export default {
       font-weight: 500;
       text-align: center;
       margin-top: 30px;
+    }
+  }
+
+  &_params {
+    width: 100%;
+    @media screen and (min-width: 750px) {
+      width: 550px;
+      margin: 0 auto;
     }
   }
 }
