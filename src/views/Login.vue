@@ -1,107 +1,60 @@
 <template>
-  <div class="login-wrapper">
-    <header class="login-wrapper_header">
-      Zaloguj się
-    </header>
-    <section class="login-wrapper_social">
-      <button class="social-google" @click="loginGoogle()">
-        <img src="../assets/btn_google_dark_normal_ios.svg" alt="google logo" />
-        <span>Login with Google</span>
-      </button>
-      <button class="social-facebook" @click="loginFacebook()">
-        <img src="../assets/f_logo_RGB-White_58.png" alt="facebook logo" />
-        <span>Login with Facebook</span>
-      </button>
-    </section>
-    <div class="login-wrapper_spacer"><span>lub</span></div>
-    <section class="login-wrapper_native">
-      <form @submit.prevent>
-        <div class="native-input">
-          <label class="native-input_label" for="email1">Email:</label>
-          <input
-            class="native-input_input"
-            v-model.trim="loginForm.email"
-            type="text"
-            placeholder="you@email.com"
-            id="email1"
+  <div class="login-bg-wrapper">
+    <div class="login-wrapper">
+      <header class="login-wrapper_header">
+        Zaloguj się
+      </header>
+      <section class="login-wrapper_social">
+        <button class="social-google" @click="loginGoogle()">
+          <img
+            src="../assets/btn_google_dark_normal_ios.svg"
+            alt="google logo"
           />
-        </div>
-        <div class="native-input">
-          <label class="native-input_label" for="password1">Hasło:</label>
-          <input
-            class="native-input_input"
-            v-model.trim="loginForm.password"
-            type="password"
-            placeholder="******"
-            id="password1"
-          />
-        </div>
-        <button @click="login()" class="button">Zaloguj się</button>
-        <ul class="native-extras">
-          <li>
-            <span>Nie masz konta? </span>
-            <router-link to="/register">Zarejestruj się</router-link>
-          </li>
-          <li>
-            <span>Zapomniałeś hasła? </span>
-            <a>Odzyskaj hasło</a>
-          </li>
-        </ul>
-      </form>
-    </section>
-    <!-- <div class="col2">
-      <form @submit.prevent>
-        <h1>Welcome Back</h1>
-        <div>
-          <label for="email1">Email</label>
-          <input
-            v-model.trim="loginForm.email"
-            type="text"
-            placeholder="you@email.com"
-            id="email1"
-          />
-        </div>
-        <div>
-          <label for="password1">Password</label>
-          <input
-            v-model.trim="loginForm.password"
-            type="password"
-            placeholder="******"
-            id="password1"
-          />
-        </div>
-        <button @click="login()" class="button">Log In</button>
-        <div class="extras">
-          <a>Forgot Password</a>
-          <a>Create an Account</a>
-        </div>
-      </form>
-      <form @submit.prevent>
-        <h1>Get Started</h1>
-        <div>
-          <label for="email2">Email</label>
-          <input
-            v-model.trim="signupForm.email"
-            type="text"
-            placeholder="you@email.com"
-            id="email2"
-          />
-        </div>
-        <div>
-          <label for="password2">Password</label>
-          <input
-            v-model.trim="signupForm.password"
-            type="password"
-            placeholder="min 6 characters"
-            id="password2"
-          />
-        </div>
-        <button @click="signup()" class="button">Sign Up</button>
-        <div class="extras">
-          <a>Back to Log In</a>
-        </div>
-      </form>
-    </div> -->
+          <span>Login with Google</span>
+        </button>
+        <button class="social-facebook" @click="loginFacebook()">
+          <img src="../assets/f_logo_RGB-White_58.png" alt="facebook logo" />
+          <span>Login with Facebook</span>
+        </button>
+      </section>
+      <div class="login-wrapper_spacer"><span>lub</span></div>
+      <section class="login-wrapper_native">
+        <form @submit.prevent>
+          <div class="native-input">
+            <label class="native-input_label" for="email1">Email:</label>
+            <input
+              class="native-input_input"
+              v-model.trim="loginForm.email"
+              type="text"
+              placeholder="you@email.com"
+              id="email1"
+            />
+          </div>
+          <div class="native-input">
+            <label class="native-input_label" for="password1">Hasło:</label>
+            <input
+              class="native-input_input"
+              v-model.trim="loginForm.password"
+              type="password"
+              placeholder="******"
+              id="password1"
+            />
+          </div>
+          <button @click="login()" class="button">Zaloguj się</button>
+          <ul class="native-extras">
+            <li>
+              <span>Nie masz konta? </span>
+              <router-link to="/register">Zarejestruj się</router-link>
+            </li>
+            <li>
+              <span>Zapomniałeś hasła? </span>
+              <a>Odzyskaj hasło</a>
+            </li>
+          </ul>
+        </form>
+      </section>
+    </div>
+    <div class="background-login"></div>
   </div>
 </template>
 
@@ -147,6 +100,20 @@ export default {
 @import "../scss/_variables.scss";
 @import "../scss/_extensions.scss";
 
+.login-bg-wrapper {
+  @media screen and (min-width: 750px) {
+    display: flex;
+    height: 100vh;
+  }
+
+  .background-login {
+    @media screen and (min-width: 750px) {
+      flex: 1;
+      background-color: $colorBackground3;
+    }
+  }
+}
+
 .login-wrapper {
   display: flex;
   flex-direction: column;
@@ -155,6 +122,12 @@ export default {
   max-width: 80%;
   min-height: 800px;
   padding: 50px 0;
+
+  @media screen and (min-width: 750px) {
+    width: 450px;
+    margin: 0 50px;
+  }
+
   &_header {
     @extend %header-text;
   }

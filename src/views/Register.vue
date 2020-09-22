@@ -1,36 +1,39 @@
 <template>
-  <div class="register-wrapper">
-    <header class="register-wrapper_header">
-      Zarejestruj się
-    </header>
-    <section class="register-wrapper_native">
-      <form @submit.prevent>
-        <div class="native-input">
-          <label class="native-input_label" for="email2">Email:</label>
-          <input
-            class="native-input_input"
-            v-model.trim="signupForm.email"
-            type="text"
-            placeholder="you@email.com"
-            id="email2"
-          />
-        </div>
-        <div class="native-input">
-          <label class="native-input_label" for="password2">Hasło:</label>
-          <input
-            class="native-input_input"
-            v-model.trim="signupForm.password"
-            type="password"
-            placeholder="******"
-            id="password2"
-          />
-        </div>
-        <button @click="signup()" class="button">Zarejestruj się</button>
-        <router-link to="/login" tag="button" class="button"
-          >Powrót</router-link
-        >
-      </form>
-    </section>
+  <div class="register-bg-wrapper">
+    <div class="register-wrapper">
+      <header class="register-wrapper_header">
+        Zarejestruj się
+      </header>
+      <section class="register-wrapper_native">
+        <form @submit.prevent>
+          <div class="native-input">
+            <label class="native-input_label" for="email2">Email:</label>
+            <input
+              class="native-input_input"
+              v-model.trim="signupForm.email"
+              type="text"
+              placeholder="you@email.com"
+              id="email2"
+            />
+          </div>
+          <div class="native-input">
+            <label class="native-input_label" for="password2">Hasło:</label>
+            <input
+              class="native-input_input"
+              v-model.trim="signupForm.password"
+              type="password"
+              placeholder="******"
+              id="password2"
+            />
+          </div>
+          <button @click="signup()" class="button">Zarejestruj się</button>
+          <router-link to="/login" tag="button" class="button"
+            >Powrót</router-link
+          >
+        </form>
+      </section>
+    </div>
+    <div class="background-register"></div>
   </div>
 </template>
 
@@ -60,6 +63,20 @@ export default {
 @import "../scss/_variables.scss";
 @import "../scss/_extensions.scss";
 
+.register-bg-wrapper {
+  @media screen and (min-width: 750px) {
+    display: flex;
+    height: 100vh;
+  }
+
+  .background-register {
+    @media screen and (min-width: 750px) {
+      flex: 1;
+      background-color: $colorBackground3;
+    }
+  }
+}
+
 .register-wrapper {
   display: flex;
   flex-direction: column;
@@ -68,6 +85,12 @@ export default {
   max-width: 80%;
   min-height: 800px;
   padding: 50px 0;
+
+  @media screen and (min-width: 750px) {
+    width: 450px;
+    margin: 0 50px;
+  }
+
   &_header {
     @extend %header-text;
   }
