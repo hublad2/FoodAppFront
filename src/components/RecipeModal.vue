@@ -14,8 +14,8 @@
         <p>{{ description }}</p>
       </section>
       <section class="recipe-wrapper_recipe recipe-ingredients">
-        <h2 class="recipe-ingredients_header">Składniki</h2>
         <div class="recipe-ingredients_wrapper">
+          <h2 class="recipe-ingredients_header">Składniki</h2>
           <Ingredient
             v-for="ingredient in ingredients"
             :key="ingredient.text"
@@ -224,6 +224,11 @@ export default {
   min-height: 800px;
   padding: 50px 0;
 
+  @media screen and (min-width: 750px) {
+    max-width: 1200px;
+    padding: 50px;
+  }
+
   &_header {
     display: flex;
     justify-content: center;
@@ -255,6 +260,10 @@ export default {
   width: 80%;
   margin: 0 auto 30px auto;
   border: 1px solid rgba($color: #000000, $alpha: 0.25);
+
+  @media screen and (min-width: 750px) {
+    width: 40%;
+  }
 }
 
 .recipe-description {
@@ -267,10 +276,21 @@ export default {
 }
 
 .recipe-ingredients {
+  &_header {
+    @media screen and (min-width: 750px) {
+      grid-column: span 2;
+    }
+  }
+
   &_wrapper {
     display: grid;
     grid-template-columns: 1fr;
     gap: 20px;
+
+    @media screen and (min-width: 750px) {
+      grid-template-columns: repeat(auto-fit, minmax(120px, 500px));
+      justify-content: center;
+    }
   }
 }
 

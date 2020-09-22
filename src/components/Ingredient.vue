@@ -58,12 +58,20 @@ export default {
       width: 20vw;
       height: 20vw;
     }
+
+    @media screen and(min-width:750px) {
+      width: 100px;
+      height: 100px;
+    }
   }
   p {
     @extend %regular-text;
     padding: 0 30px;
     @media screen and(min-width:500px) {
       font-size: 3.5vw;
+    }
+    @media screen and(min-width:750px) {
+      font-size: 2rem;
     }
   }
 }
