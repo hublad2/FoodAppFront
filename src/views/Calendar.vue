@@ -85,9 +85,6 @@ export default {
   },
   mounted() {},
   methods: {
-    kekw() {
-      console.log("kekw");
-    },
     handleRecipeModalOpen(item) {
       this.recipeModalItem = item[0];
       this.recipeModalOpen = true;
