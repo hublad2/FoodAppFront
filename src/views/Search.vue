@@ -56,6 +56,7 @@
     <button @click="fetchRecipes()" class="button">Wyszukaj</button>
     <router-link to="/entry" tag="button" class="button">Powrót</router-link>
     <section class="search-wrapper_results" v-if="recipes">
+      <!-- List of all fetched recipes -->
       <RecipeItem
         v-for="item in recipes"
         :itemRecipe="item"
@@ -63,6 +64,7 @@
         @click.native="handleRecipeModalOpen(item)"
       />
     </section>
+    <!-- Component displaying information when RecipeItem is selected -->
     <RecipeModal
       v-if="recipeModalOpen"
       :itemRecipeModal="recipeModalItem"

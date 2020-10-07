@@ -99,6 +99,7 @@ export default {
   },
   mounted() {
     const input = document.querySelector("textarea[name=ingredients2]");
+
     let ingredients = new Tagify(input, {
       enforceWhitelist: false,
       delimiters: null,
@@ -117,7 +118,6 @@ export default {
     this.$store.state.currentRecipe.ingredients.forEach((ingredient) => {
       ingredients.addTags(ingredient);
     });
-    console.log(ingredients.value);
   },
   methods: {
     checkIfOkToSend() {
@@ -160,21 +160,24 @@ export default {
         const dataUrl = this.runImg();
 
         try {
-          let results = await fetch("http://localhost:3000/recipes/update", {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${this.$store.state.userProfile.token}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: this.title,
-              description: this.updateForm.description,
-              ingredients: this.updateForm.ingredients,
-              preparation: this.updateForm.preparations,
-              photo: dataUrl,
-              userId: this.$store.state.userProfile.user._id,
-            }),
-          });
+          let results = await fetch(
+            "https://hidden-cliffs-64077.herokuapp.com/recipes/update",
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: this.title,
+                description: this.updateForm.description,
+                ingredients: this.updateForm.ingredients,
+                preparation: this.updateForm.preparations,
+                photo: dataUrl,
+                userId: this.$store.state.userProfile.user._id,
+              }),
+            }
+          );
           let resultsJSON = await results.json();
           console.log(resultsJSON);
         } catch (err) {

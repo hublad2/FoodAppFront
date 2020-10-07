@@ -116,16 +116,19 @@ export default {
       this.$refs.recipeList.fetchSchedule(this.dateSelected);
     },
     async fetchRecipeById(recipe, dateId) {
-      let results = await fetch("http://localhost:3000/recipes/get", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${this.$store.state.userProfile.token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          recipeId: recipe,
-        }),
-      });
+      let results = await fetch(
+        "https://hidden-cliffs-64077.herokuapp.com/recipes/get",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            recipeId: recipe,
+          }),
+        }
+      );
 
       let resultsJSON = await results.json();
       resultsJSON[0].dateId = dateId;

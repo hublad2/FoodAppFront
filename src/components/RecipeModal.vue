@@ -148,16 +148,19 @@ export default {
     async fetchDeleteRecipe() {
       if (this.$store.state.userProfile.token) {
         try {
-          let results = await fetch("http://localhost:3000/recipes/remove", {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${this.$store.state.userProfile.token}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: this.title,
-            }),
-          });
+          let results = await fetch(
+            "https://hidden-cliffs-64077.herokuapp.com/recipes/remove",
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: this.title,
+              }),
+            }
+          );
 
           let resultsJSON = await results.json();
           if (resultsJSON) this.$emit("close-recipe-modal-delete");
@@ -172,17 +175,20 @@ export default {
     },
     async fetchDeleteDate() {
       if (this.$store.state.userProfile.token) {
-        let results = await fetch("http://localhost:3000/schedules/remove", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${this.$store.state.userProfile.token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: this.$store.state.userProfile.user._id,
-            dateId: this.dateId,
-          }),
-        });
+        let results = await fetch(
+          "https://hidden-cliffs-64077.herokuapp.com/schedules/remove",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId: this.$store.state.userProfile.user._id,
+              dateId: this.dateId,
+            }),
+          }
+        );
 
         let resultsJSON = await results.json();
 

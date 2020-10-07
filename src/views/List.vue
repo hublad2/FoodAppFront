@@ -10,6 +10,7 @@
       <router-link to="/entry" tag="button" class="button">Powrót</router-link>
     </div>
     <section class="list-wrapper_results" v-if="recipes">
+      <!-- List of all fetched recipes -->
       <RecipeItem
         v-for="item in recipes"
         :itemRecipe="item"
@@ -19,6 +20,7 @@
         @click.native="handleRecipeModalOpen(item)"
       />
     </section>
+    <!-- Component displaying information when RecipeItem is selected -->
     <RecipeModal
       v-if="recipeModalOpen"
       :itemRecipeModal="recipeModalItem"

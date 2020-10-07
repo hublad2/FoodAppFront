@@ -25,6 +25,7 @@ export default {
     };
   },
   mounted() {
+    /* Behaviour of RecipeItem changes depending, if the recipe is beeing shown in List view or not */
     if (!this.listMode) {
       this.photo = this.itemRecipe.recipe.image;
       this.title = this.itemRecipe.recipe.label;

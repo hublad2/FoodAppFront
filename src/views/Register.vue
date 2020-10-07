@@ -50,6 +50,7 @@ export default {
   },
   methods: {
     signup() {
+      // Send user data to Vuex
       this.$store.dispatch("signup", {
         email: this.signupForm.email,
         password: this.signupForm.password,

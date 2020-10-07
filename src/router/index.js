@@ -90,6 +90,7 @@ const router = new VueRouter({
   routes,
 });
 
+// Check if route requires authentiaction
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some((x) => x.meta.requiresAuth);
 

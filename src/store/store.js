@@ -26,6 +26,7 @@ const store = new Vuex.Store({
     },
   },
   actions: {
+    // Login user using Firebase auth
     async login({ dispatch }, form) {
       try {
         const { user } = await fb.auth.signInWithEmailAndPassword(
@@ -39,6 +40,7 @@ const store = new Vuex.Store({
     },
     /* Log in at server and get user token */
     async fetchUser({ commit }, user) {
+      // Login user in the API using data from Firebase
       const response = await fetch(
         "https://hidden-cliffs-64077.herokuapp.com/login",
         {
@@ -52,14 +54,13 @@ const store = new Vuex.Store({
 
       const responseJSON = await response.json();
 
-      console.log(responseJSON);
-
       commit("setUserProfile", responseJSON);
       commit("setLoginStatus", true);
 
       router.push("/entry");
     },
     async signup({ dispatch }, form) {
+      // Create user using Firebase auth
       const { user } = await fb.auth.createUserWithEmailAndPassword(
         form.email,
         form.password

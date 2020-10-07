@@ -30,6 +30,7 @@ export default {
     };
   },
   created() {
+    /* Behaviour of Ingredient component changes, depending if the recipe was created by user or not */
     if (this.edamamId) {
       this.photo = this.itemIngredient.image;
       this.description = this.itemIngredient.text;

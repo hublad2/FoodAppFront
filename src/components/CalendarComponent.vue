@@ -1,5 +1,6 @@
 <template>
   <div class="calendar" id="calendar">
+    <!-- Calendar HTML structure -->
     <!-- <div class="calendar-header">
       <div class="calendar-button calendar-prev"></div>
       <div class="calendar-date-text">Wrzesień 2020</div>
@@ -49,16 +50,19 @@ export default {
   },
   methods: {
     async fetchScheduleGet() {
-      let results = await fetch("http://localhost:3000/schedules", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${this.$store.state.userProfile.token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: this.$store.state.userProfile.user._id,
-        }),
-      });
+      let results = await fetch(
+        "https://hidden-cliffs-64077.herokuapp.com/schedules",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: this.$store.state.userProfile.user._id,
+          }),
+        }
+      );
       let resultsJSON = await results.json();
       this.schedule = resultsJSON[0].dates;
       this.schedule.forEach((recipe) => {

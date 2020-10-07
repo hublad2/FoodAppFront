@@ -56,23 +56,31 @@ export default {
 
       let resultsJSON = await results.json();
       this.recipes = resultsJSON;
+
+      // Fetching is complete, let other components know, and do other stuff
       this.$emit("fetch-complete");
     },
     async fetchSchedule(date) {
-      let results = await fetch("http://localhost:3000/schedules/add", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${this.$store.state.userProfile.token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: this.$store.state.userProfile.user._id,
-          recipeId: this.frontRecipe._id,
-          date: new Date(date.year, date.month - 1, date.day),
-        }),
-      });
+      let results = await fetch(
+        "https://hidden-cliffs-64077.herokuapp.com/schedules/add",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${this.$store.state.userProfile.token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: this.$store.state.userProfile.user._id,
+            recipeId: this.frontRecipe._id,
+            date: new Date(date.year, date.month - 1, date.day),
+          }),
+        }
+      );
+
       let resultsJSON = await results.json();
       console.log(resultsJSON);
+
+      // Fetching is complete, let other components know, and do other stuff
       this.$emit("fetch-schedule-complete");
     },
     updateFrontRecipe(recipe) {
