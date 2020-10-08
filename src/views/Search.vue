@@ -11,7 +11,7 @@
             class="params-keywords_input params-input_input"
             v-model.trim="searchForm.keywords"
             type="text"
-            placeholder="Słowa kluczowe"
+            placeholder="Wpisz składnik, nazwę potrawy... (ang)"
             id="keywords1"
           />
         </div>
