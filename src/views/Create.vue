@@ -105,6 +105,7 @@ export default {
         preparations: "",
       },
       photo: null,
+      photoURL: null,
       previewPhoto: null,
       previewOpen: false,
     };
@@ -147,52 +148,36 @@ export default {
     },
     UploadImgToFirebase(img) {
       let progressBar = document.querySelector("#progress-bar");
-      console.log(img);
       let storageRef = storage.ref(this.createForm.name);
       let task = storageRef.put(img);
 
-      task.on(
-        "state_changed",
+      return new Promise((resolve) => {
+        task.on(
+          "state_changed",
 
-        function progress(snapshot) {
-          let percentage =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          function progress(snapshot) {
+            let percentage =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 
-          progressBar.value = percentage;
-        },
+            progressBar.value = percentage;
+          },
 
-        function error(err) {
-          console.log(err);
-        },
+          function error(err) {
+            console.log(err);
+          },
 
-        function complete() {}
-      );
-    },
-    getDataUrl(img) {
-      // Create canvas
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      // Set width and height
-      canvas.width = 300;
-      canvas.height = 300;
-      // Draw the image
-      /* ctx.drawImage(img, 0, 0); */
-      ctx.drawImage(img, 0, 0, 300, 300, 0, 0, 300, 300);
-      return canvas.toDataURL();
-    },
-    runImg() {
-      let dataUrl = "";
-      if (this.previewOpen) {
-        const img = document.querySelector("#previewImage");
-        dataUrl = this.getDataUrl(img);
-      }
-      return dataUrl;
+          function complete() {
+            task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+              resolve(downloadURL);
+            });
+          }
+        );
+      });
     },
     async fetchCreateRecipe() {
       //Run only if the user selected image to send
       if (this.checkIfOkToSend()) {
-        const dataUrl = this.runImg();
-        this.UploadImgToFirebase(this.photo);
+        this.photoURL = await this.UploadImgToFirebase(this.photo);
 
         const updatedIngredients = this.createForm.ingredients.filter(
           (ingredient) => ingredient != "Składnik"
@@ -213,7 +198,7 @@ export default {
                 description: this.createForm.description,
                 preparation: this.createForm.preparations,
                 userId: this.$store.state.userProfile.user._id,
-                photo: null,
+                photo: this.photoURL,
                 edamamId: false,
               }),
             }
