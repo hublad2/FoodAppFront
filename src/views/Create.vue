@@ -74,6 +74,10 @@
           id="previewImage"
           class="form-input_preview"
         />
+        <div v-if="previewOpen" class="progress-container">
+          <h4>Status wysyłania:</h4>
+          <progress value="0" max="100" id="progress-bar"></progress>
+        </div>
         <button @click="fetchCreateRecipe()" class="button-create">
           Zapisz
         </button>
@@ -88,6 +92,7 @@
 <script>
 import Tagify from "@yaireo/tagify/dist/tagify.min.js";
 import "@yaireo/tagify/dist/tagify.css";
+import { storage } from "../firebase";
 
 export default {
   name: "Create",
@@ -99,6 +104,8 @@ export default {
         ingredients: [],
         preparations: "",
       },
+      photo: null,
+      photoURL: null,
       previewPhoto: null,
       previewOpen: false,
     };
@@ -135,32 +142,42 @@ export default {
     },
     initPreview() {
       const imageUploader = document.querySelector("#photo2");
+      this.photo = imageUploader.files[0];
       this.previewPhoto = URL.createObjectURL(imageUploader.files[0]);
       this.previewOpen = true;
     },
-    getDataUrl(img) {
-      // Create canvas
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      // Set width and height
-      canvas.width = img.width;
-      canvas.height = img.height;
-      // Draw the image
-      ctx.drawImage(img, 0, 0);
-      return canvas.toDataURL("image/jpeg");
-    },
-    runImg() {
-      let dataUrl = "";
-      if (this.previewOpen) {
-        const img = document.querySelector("#previewImage");
-        dataUrl = this.getDataUrl(img);
-      }
-      return dataUrl;
+    UploadImgToFirebase(img) {
+      let progressBar = document.querySelector("#progress-bar");
+      let storageRef = storage.ref(this.createForm.name);
+      let task = storageRef.put(img);
+
+      return new Promise((resolve) => {
+        task.on(
+          "state_changed",
+
+          function progress(snapshot) {
+            let percentage =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+
+            progressBar.value = percentage;
+          },
+
+          function error(err) {
+            console.log(err);
+          },
+
+          function complete() {
+            task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+              resolve(downloadURL);
+            });
+          }
+        );
+      });
     },
     async fetchCreateRecipe() {
       //Run only if the user selected image to send
       if (this.checkIfOkToSend()) {
-        const dataUrl = this.runImg();
+        this.photoURL = await this.UploadImgToFirebase(this.photo);
 
         const updatedIngredients = this.createForm.ingredients.filter(
           (ingredient) => ingredient != "Składnik"
@@ -181,7 +198,7 @@ export default {
                 description: this.createForm.description,
                 preparation: this.createForm.preparations,
                 userId: this.$store.state.userProfile.user._id,
-                photo: dataUrl,
+                photo: this.photoURL,
                 edamamId: false,
               }),
             }
@@ -283,6 +300,21 @@ export default {
     margin-top: 10px;
     width: 100%;
     border: 1px solid rgba(0, 0, 0, 0.25);
+  }
+}
+
+.progress-container {
+  margin-top: 20px;
+
+  h4 {
+    @extend %regular-text;
+    font-weight: bold;
+  }
+  #progress-bar {
+    margin-top: 10px;
+    width: 100%;
+    height: 30px;
+    appearance: none;
   }
 }
 </style>

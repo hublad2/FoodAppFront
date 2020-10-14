@@ -4,8 +4,7 @@
       <i class="fas fa-egg header_icon"></i>
       <header class="header_primary">Kuchnio Zarządzacz</header>
       <h2 class="header_secondary">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi gravida
-        auctor nunc.
+        Aplikacja ułatwiająca organizację w kuchni.
       </h2>
       <router-link to="/entry" tag="button" class="header_button"
         >Wypróbuj</router-link
