@@ -2,6 +2,10 @@
 
 Food-app-front is a simple, vue based frontend for the food-app. Food-app is intended to help organize yourself at food and diet oriented manners.
 
+## Disclaimer
+
+Right now, backend of food-app is hosted at free-tier heroku. Because of this, API calls can take a while, especially when logging, up to 10 seconds.
+
 ## Food-app Features
 
 - User authorization (native, google, facebook) using [Passport.js](http://www.passportjs.org/) and [Firebase](https://firebase.google.com/)
