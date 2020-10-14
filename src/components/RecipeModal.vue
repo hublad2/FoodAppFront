@@ -139,7 +139,8 @@ export default {
         );
 
         let resultsJSON = await results.json();
-        this.recipes = resultsJSON.hits;
+
+        if (resultsJSON) this.$emit("close-recipe-modal");
         console.log(resultsJSON);
       } else {
         this.$router.push({ path: "login" });
