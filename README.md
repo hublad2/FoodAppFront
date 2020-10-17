@@ -18,6 +18,21 @@ Right now, backend of food-app is hosted at free-tier heroku. Because of this, A
 - More feedback for the user after saving, deleting and editing recipes
 - Do not show recipes that are already saved by the user
 
+## Presentation
+
+Example of a search result
+![Search result](https://i.imgur.com/QVPVKJJ.png)
+
+Calendar and schedule recipe section
+![Calendar](https://i.imgur.com/ShtEGLv.png)
+![Add recipe](https://i.imgur.com/Z7a0MY3.png)
+
+Saved recipes list
+![Saved recipes](https://i.imgur.com/3EkKOvA.png)
+
+Create recipe
+![Create recipe view](https://i.imgur.com/xet5F1X.png)
+
 ## Project setup
 
 Project was created with Vue CLI
