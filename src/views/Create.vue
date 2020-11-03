@@ -219,9 +219,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../scss/_variables.scss";
-@import "../scss/_extensions.scss";
-
 .create-wrapper {
   display: flex;
   flex-direction: column;

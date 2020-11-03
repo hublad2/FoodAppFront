@@ -1,9 +1,5 @@
-@import "./variables";
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
-
 %green-button {
   font-weight: 500;
-  font-family: "Roboto", sans-serif;
   color: $colorFont3;
   font-size: 2.8rem;
   background-color: $colorBackground3;
@@ -18,8 +14,24 @@
   }
 }
 
+%heading-1 {
+  font-size: 4rem;
+  color: $colorFontPrimary;
+  font-weight: 600;
+}
+
+%text-subtle {
+  font-size: 1.4rem;
+  color: $colorFontSubtle;
+  font-weight: 400;
+}
+
+%elevation {
+  background-color: $colorBackground2;
+  box-shadow: 0 6px 20px rgba(#0d3320, 0.1);
+}
+
 %header-text {
-  font-family: "Roboto", sans-serif;
   font-size: 4.2rem;
   color: $colorFont1;
   text-align: center;
@@ -27,13 +39,11 @@
 }
 
 %regular-text {
-  font-family: "Roboto", sans-serif;
   font-size: 1.7rem;
   color: $colorFont2;
 }
 
 %green-text {
-  font-family: "Roboto", sans-serif;
   font-size: 1.8rem;
   color: $colorFont1;
 }

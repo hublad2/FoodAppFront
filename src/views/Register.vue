@@ -61,9 +61,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/_variables.scss";
-@import "../scss/_extensions.scss";
-
 .register-bg-wrapper {
   @media screen and (min-width: 750px) {
     display: flex;
