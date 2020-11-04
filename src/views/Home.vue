@@ -7,7 +7,7 @@
       <h2 class="header_secondary">
         Aplikacja ułatwiająca organizację w kuchni.
       </h2>
-      <BaseLink class="header_button" :value="'Wypróboj'" :target="'/list'" />
+      <BaseLink class="header_button" :value="'Wypróbuj'" :target="'/list'" />
     </div>
     <div class="home-wrapper_list list">
       <ul>
@@ -53,9 +53,10 @@ export default {
     padding: 30px 30px;
   }
 
-  @media screen and (min-width: 750px) {
+  @media screen and (min-width: $tablet) {
     flex-direction: row;
     max-width: 100vw;
+    height: 100vh;
     justify-content: center;
   }
 
@@ -77,7 +78,7 @@ export default {
     height: 50%;
     width: 90%;
     @extend %elevation;
-    margin-top: 20px;
+    margin-top: 10px;
     max-width: 400px;
     max-height: 600px;
 
@@ -111,14 +112,14 @@ export default {
 }
 
 .header {
-  @media screen and (min-width: 750px) {
+  @media screen and (min-width: $tablet) {
     padding: 0 50px;
   }
   &_icon {
     font-size: 5rem;
 
-    @media screen and (min-width: 750px) {
-      display: none;
+    @media screen and (min-width: $tablet) {
+      display: none !important;
     }
   }
 
@@ -127,7 +128,7 @@ export default {
     margin-top: 30px;
     text-align: center;
 
-    @media screen and (min-width: 750px) {
+    @media screen and (min-width: $tablet) {
       text-align: left;
       font-size: 5rem;
       width: 25vw;
@@ -136,11 +137,12 @@ export default {
 
   &_secondary {
     @extend %text-subtle;
+    font-size: 2rem;
     text-align: center;
     margin-top: 20px;
-    width: 260px;
+    width: 300px;
 
-    @media screen and (min-width: 750px) {
+    @media screen and (min-width: $tablet) {
       text-align: left;
       width: 40vw;
       font-size: 2.5rem;
@@ -148,7 +150,7 @@ export default {
   }
 
   &_button {
-    margin-top: 20px;
+    margin-top: 25px;
   }
 }
 
@@ -161,7 +163,11 @@ export default {
     i {
       font-size: 4.4rem;
 
-      @media screen and (min-width: 750px) {
+      :first-of-type {
+        margin-right: 20px;
+      }
+
+      @media screen and (min-width: $tablet) {
         font-size: 7rem;
       }
 
@@ -171,18 +177,17 @@ export default {
     }
 
     span {
-      @extend %green-text;
+      @extend %text-gray;
       font-size: 2.5rem;
       margin-left: 12%;
       justify-self: flex-end;
 
-      @media screen and (min-width: 750px) {
-        font-size: 3rem;
+      @media screen and (min-width: $tablet) {
         margin-left: 20%;
       }
 
       @media screen and (min-width: 1250px) {
-        font-size: 5rem;
+        font-size: 4rem;
       }
     }
   }

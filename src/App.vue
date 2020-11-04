@@ -1,28 +1,15 @@
 <template>
   <div id="app">
-    <aside v-if="this.$store.state.logged">
-      <ul class="navigation">
-        <li>
-          Witaj <span>{{ user }}</span>
-        </li>
-        <li @click="logout()">Wyloguj się</li>
-      </ul>
-    </aside>
+    <TheTopBar v-if="this.$store.state.logged" />
     <router-view />
   </div>
 </template>
 
 <script>
+import TheTopBar from "@/components/TheTopBar";
 export default {
-  computed: {
-    user() {
-      return this.$store.state.userProfile.user.email;
-    },
-  },
-  methods: {
-    logout() {
-      this.$store.dispatch("logout");
-    },
+  components: {
+    TheTopBar,
   },
 };
 </script>
@@ -54,22 +41,8 @@ body {
   width: 100%;
 }
 
-.navigation {
-  @extend %regular-text;
-  display: flex;
-  justify-content: space-between;
-  margin: 15px 30px;
-
-  li {
-    span {
-      font-weight: bold;
-    }
-  }
-
-  li:nth-of-type(2) {
-    font-weight: bold;
-    text-decoration: underline;
-    cursor: pointer;
-  }
+a {
+  text-decoration: none;
+  color: inherit;
 }
 </style>

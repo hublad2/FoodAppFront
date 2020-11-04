@@ -23,13 +23,29 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-decoration: none;
   background-color: $colorPrimary;
   font-size: 1.6rem;
-  text-decoration: none;
   color: $colorFont3;
   font-weight: bold;
   width: 200px;
   height: 50px;
   border-radius: 8px;
+  cursor: pointer;
+}
+
+.action-link {
+  border: none;
+  background: none;
+  color: $colorPrimary;
+  font-size: 1.8rem;
+}
+
+.nav-link {
+  border: none;
+  background: none;
+  color: $colorFontNav;
+  display: inline;
+  padding: 20px 20px;
 }
 </style>

@@ -39,20 +39,22 @@ export default {
 
 <style lang="scss" scoped>
 .recipe-item {
+  @extend %elevation;
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
+  text-align: center;
 
   &_image {
-    width: 300px;
-    height: 300px;
+    width: 100%;
+    height: 80%;
+    border-radius: 8px 8px 0 0;
+    object-fit: cover;
   }
 
   &_header {
-    @extend %green-text;
-    font-size: 2.2rem;
-    font-weight: 500;
-    text-align: center;
+    @extend %card-item;
     margin-top: 30px;
   }
 }
