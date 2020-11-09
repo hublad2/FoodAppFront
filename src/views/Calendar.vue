@@ -167,6 +167,7 @@ export default {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    cursor: pointer;
   }
 
   &_icon-link {

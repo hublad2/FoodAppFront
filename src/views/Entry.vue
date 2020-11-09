@@ -53,11 +53,6 @@ export default {
 <style lang="scss" scoped>
 .entry-bg-wrapper {
   @media screen and (min-width: $tablet) {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -86,7 +81,7 @@ export default {
     "search"
     "spacer"
     "your";
-  margin: 0 auto;
+  margin: 11% auto 0 auto;
   padding: 50px $paddingSides;
   background-color: $colorBackground2;
 
