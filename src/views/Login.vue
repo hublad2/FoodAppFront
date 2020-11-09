@@ -8,7 +8,7 @@
         <GoogleLogin />
         <FacebookLogin />
       </section>
-      <BaseSpacer :value="'lub'" />
+      <BaseSpacer class="login-wrapper_spacer" :value="'lub'" />
       <section class="login-wrapper_native">
         <form @submit.prevent>
           <LabeledField
@@ -175,18 +175,7 @@ export default {
   }
 
   &_spacer {
-    grid-area: spacer;
-    @extend %text-gray;
-    width: 100%;
-    text-align: center;
-    border-bottom: 1px solid #000;
-    line-height: 0.1em;
     margin: 50px 0 20px;
-
-    span {
-      background: $colorBackground2;
-      padding: 0 10px;
-    }
   }
 
   &_native {

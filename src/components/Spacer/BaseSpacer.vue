@@ -24,7 +24,6 @@ export default {
   text-align: center;
   border-bottom: 1px solid #000;
   line-height: 0.1em;
-  margin: 50px 0 20px;
 
   &_text {
     background: $colorBackground2;

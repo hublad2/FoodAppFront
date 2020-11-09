@@ -82,11 +82,12 @@ export default {
   display: grid;
   grid-template-columns: 100%;
   grid-template-areas:
+    "logo"
     "search"
     "spacer"
     "your";
   margin: 0 auto;
-  padding: 50px;
+  padding: 50px $paddingSides;
   background-color: $colorBackground2;
 
   @media screen and (min-width: $tablet) {
@@ -108,7 +109,6 @@ export default {
 
   &_search {
     grid-area: search;
-    margin-top: 20px;
   }
 
   &_your {
@@ -122,7 +122,6 @@ export default {
   }
 
   &_logo {
-    display: none;
     @media screen and (min-width: $desktop) {
       display: flex;
       justify-content: center;
@@ -159,9 +158,15 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 5em;
+  text-align: center;
   h3 {
     @extend %heading-2;
-    font-size: 2vw;
+
+    @media screen and (min-width: $desktop) {
+      font-size: 2vw;
+    }
+
     color: rgba(#363837, 1);
   }
   i {
