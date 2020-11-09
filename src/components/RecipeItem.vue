@@ -1,7 +1,9 @@
 <template>
   <div class="recipe-item">
     <img class="recipe-item_image" :src="photo" />
-    <h2 class="recipe-item_header">{{ title }}</h2>
+    <div class="header-wrapper">
+      <h2 class="recipe-item_header">{{ title }}</h2>
+    </div>
   </div>
 </template>
 
@@ -55,7 +57,14 @@ export default {
 
   &_header {
     @extend %card-item;
-    margin-top: 30px;
   }
+}
+
+.header-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

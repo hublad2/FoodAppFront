@@ -58,7 +58,11 @@
           </select>
         </div> -->
       </form>
-      <BaseButton @click.native="fetchRecipes()" :value="'Wyszukaj'" />
+      <BaseButton
+        class="search-wrapper_params_button"
+        @click.native="fetchRecipes()"
+        :value="'Wyszukaj'"
+      />
     </section>
     <section class="search-wrapper_results" v-if="recipes">
       <!-- List of all fetched recipes -->
@@ -184,41 +188,36 @@ export default {
   }
 
   &_results {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-auto-rows: 350px;
-    gap: 60px;
-    margin-top: 50px;
-
-    img {
-      width: 100%;
-    }
-
-    h2 {
-      @extend %green-text;
-      font-size: 2.2rem;
-      font-weight: 500;
-      text-align: center;
-      margin-top: 30px;
-    }
+    @extend %list-grid;
   }
 
   &_params {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 300px;
+    width: 100%;
     margin-top: 2em;
 
-    @media screen and (min-width: $tablet) {
+    form {
+      margin-bottom: 2em;
+      flex: 1;
+    }
+
+    &_button {
       width: 100%;
+    }
+
+    @media screen and (min-width: $tablet) {
       flex-direction: row;
       align-items: center;
-      justify-content: flex-start;
 
       form {
-        margin-right: 1em;
+        margin: 0 1em 0 0;
         flex: 1;
+      }
+
+      &_button {
+        width: 200px;
       }
     }
   }

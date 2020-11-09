@@ -132,23 +132,7 @@ export default {
   }
 
   &_results {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-auto-rows: 350px;
-    gap: 60px;
-    margin-top: 50px;
-
-    img {
-      width: 100%;
-    }
-
-    h2 {
-      @extend %text-gray;
-      font-size: 2.2rem;
-      font-weight: 500;
-      text-align: center;
-      margin-top: 30px;
-    }
+    @extend %list-grid;
   }
 }
 
