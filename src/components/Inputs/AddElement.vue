@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     handleSubmit() {
-      this.$emit("sendToParent", this.inputValue);
+      this.$emit("send-to-parent", this.inputValue);
     },
   },
 };

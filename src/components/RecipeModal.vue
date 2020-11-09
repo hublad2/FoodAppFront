@@ -100,10 +100,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    edamamId: {
-      type: Boolean,
-      default: true,
-    },
   },
   data() {
     return {
@@ -114,6 +110,7 @@ export default {
       description: null,
       dateId: null,
       recipes: [],
+      edamamId: false,
     };
   },
   created() {

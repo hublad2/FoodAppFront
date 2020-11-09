@@ -51,14 +51,14 @@
           :value="'Dodaj składnik'"
           :inputName="'ingredients'"
           :type="'ingredients'"
-          @sendToParent="(e) => updateValue('ingredients', e)"
+          @send-to-parent="(e) => updateValue('ingredients', e)"
         />
         <NewRecipeCard
           :header="'Przygotowanie'"
           :value="'Dodaj etap'"
           :inputName="'preparation'"
           :type="'preparation'"
-          @sendToParent="(e) => updateValue('preparations', e)"
+          @send-to-parent="(e) => updateValue('preparations', e)"
         />
         <div class="form-container form-input">
           <label

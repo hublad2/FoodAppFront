@@ -3,13 +3,13 @@
     <h3 class="card-wrapper_header">{{ header }}</h3>
     <AddElement
       v-if="mode"
-      @sendToParent="handleSubmit"
+      @send-to-parent="handleSubmit"
       :value="value"
       :inputMode="mode"
     />
     <AddElement
       v-if="!mode"
-      @sendToParent="handleSubmit"
+      @send-to-parent="handleSubmit"
       :value="value"
       :inputMode="mode"
       @click.native="mode = !mode"
@@ -75,7 +75,7 @@ export default {
   methods: {
     handleSubmit(value) {
       if (value !== undefined && value !== null && value != "") {
-        this.$emit("sendToParent", value);
+        this.$emit("send-to-parent", value);
         this.savedValues.push(value);
         this.mode = !this.mode;
       }

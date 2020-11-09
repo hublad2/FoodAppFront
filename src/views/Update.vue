@@ -41,7 +41,7 @@
           :inputName="'ingredients'"
           :initialValues="updateForm.ingredients"
           :type="'ingredients'"
-          @sendToParent="(e) => updateValue('ingredients', e)"
+          @send-to-parent="(e) => updateValue('ingredients', e)"
         />
         <NewRecipeCard
           :header="'Przygotowanie'"
@@ -49,7 +49,7 @@
           :inputName="'preparation'"
           :initialValues="updateForm.preparations"
           :type="'preparation'"
-          @sendToParent="(e) => updateValue('preparations', e)"
+          @send-to-parent="(e) => updateValue('preparations', e)"
         />
         <div class="form-container form-input">
           <label class="form-container--label" for="description2">Opis</label>
