@@ -1,5 +1,11 @@
 <template>
   <div class="search-wrapper">
+    <nav class="search-wrapper_nav nav">
+      <router-link to="/entry" class="nav_container">
+        <i class="fas fa-angle-left nav_icon-link"></i>
+        <BaseButton :class="'nav-button'" :value="'Powrót'" />
+      </router-link>
+    </nav>
     <header class="search-wrapper_header">
       Wyszukaj przepisy
     </header>
@@ -52,9 +58,8 @@
           </select>
         </div> -->
       </form>
+      <BaseButton @click.native="fetchRecipes()" :value="'Wyszukaj'" />
     </section>
-    <button @click="fetchRecipes()" class="button">Wyszukaj</button>
-    <router-link to="/entry" tag="button" class="button">Powrót</router-link>
     <section class="search-wrapper_results" v-if="recipes">
       <!-- List of all fetched recipes -->
       <RecipeItem
@@ -75,14 +80,16 @@
 </template>
 
 <script>
-import RecipeItem from "@/components/RecipeItem.vue";
-import RecipeModal from "@/components/RecipeModal.vue";
+import RecipeItem from "@/components/RecipeItem";
+import RecipeModal from "@/components/RecipeModal";
+import BaseButton from "@/components/Button/BaseButton";
 
 export default {
   name: "Search",
   components: {
     RecipeItem,
     RecipeModal,
+    BaseButton,
   },
   data() {
     return {
@@ -139,29 +146,49 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/_variables.scss";
-@import "../scss/_extensions.scss";
+.nav {
+  &_container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  &_icon-link {
+    font-size: 3.5rem;
+    color: #363837;
+  }
+
+  &_icon-action {
+    font-size: 3rem;
+    color: $colorPrimary;
+  }
+}
 
 .search-wrapper {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  max-width: 80%;
+  max-width: 1200px;
   min-height: 800px;
-  padding: 50px 0;
-  align-items: center;
+  padding: 50px $paddingSides;
+
+  &_nav {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3em;
+  }
 
   &_header {
-    @extend %header-text;
+    @extend %heading-3;
   }
 
   &_results {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 300px));
-    justify-content: center;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-auto-rows: 350px;
     gap: 60px;
-    margin-top: 100px;
-    max-width: 70vw;
+    margin-top: 50px;
 
     img {
       width: 100%;
@@ -177,10 +204,22 @@ export default {
   }
 
   &_params {
-    width: 100%;
-    @media screen and (min-width: 750px) {
-      width: 550px;
-      margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 300px;
+    margin-top: 2em;
+
+    @media screen and (min-width: $tablet) {
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+
+      form {
+        margin-right: 1em;
+        flex: 1;
+      }
     }
   }
 }
@@ -190,7 +229,6 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 32px;
 
   &_label {
     @extend %regular-text;
@@ -198,7 +236,9 @@ export default {
   }
 
   &_input {
-    @extend %input;
+    background: #ffffff;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
     height: 40px;
   }
 }
@@ -207,7 +247,7 @@ export default {
   i {
     font-size: 4.4rem;
     width: 50px;
-    color: $colorFont1;
+    color: $colorFontSubtle;
     margin-right: 15px;
   }
   &_input {
@@ -249,15 +289,6 @@ export default {
       height: 40px !important;
     }
   }
-}
-
-.button {
-  @extend %green-button;
-  width: 100%;
-  margin: 50px auto 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .lds-dual-ring {

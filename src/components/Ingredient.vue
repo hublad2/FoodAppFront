@@ -42,44 +42,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/_variables.scss";
-@import "../scss/_extensions.scss";
-
 .ingredients {
   display: flex;
   padding-bottom: 10px;
-  border-bottom: 1px solid rgba($color: #000000, $alpha: 0.25);
   align-items: center;
 
   img {
     width: 100px;
     height: 100px;
+    border-radius: 50px;
 
-    @media screen and(min-width:500px) {
+    @media screen and (min-width: 500px) {
       width: 20vw;
       height: 20vw;
+      border-radius: 10vw;
     }
 
-    @media screen and(min-width:750px) {
+    @media screen and (min-width: 750px) {
       width: 100px;
       height: 100px;
     }
   }
+
   p {
-    @extend %regular-text;
-    padding: 0 30px;
-    @media screen and(min-width:500px) {
-      font-size: 3.5vw;
-    }
-    @media screen and(min-width:750px) {
-      font-size: 2rem;
-    }
+    margin-left: 1.5em;
+    font-size: 1.8rem;
   }
 }
 
 .edamam-false {
   p {
-    padding: 0 20px;
+    margin-left: 0;
   }
 }
 </style>

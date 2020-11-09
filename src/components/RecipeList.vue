@@ -91,13 +91,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/_variables.scss";
-@import "../scss/_extensions.scss";
-
 .recipe-select {
+  @extend %elevation;
   width: 100%;
   background: $colorBackground2;
-  box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.1);
 
   &_initial {
     display: flex;

@@ -1,14 +1,13 @@
 <template>
   <div class="home-wrapper">
+    <div class="home-wrapper_background"></div>
     <div class="home-wrapper_header header">
       <i class="fas fa-egg header_icon"></i>
       <header class="header_primary">Kuchnio Zarządzacz</header>
       <h2 class="header_secondary">
         Aplikacja ułatwiająca organizację w kuchni.
       </h2>
-      <router-link to="/entry" tag="button" class="header_button"
-        >Wypróbuj</router-link
-      >
+      <BaseLink class="header_button" :value="'Wypróbuj'" :target="'/list'" />
     </div>
     <div class="home-wrapper_list list">
       <ul>
@@ -30,15 +29,16 @@
 </template>
 
 <script>
+import BaseLink from "../components/Button/BaseLink";
 export default {
   name: "Home",
+  components: {
+    BaseLink,
+  },
 };
 </script>
 
 <style lang="scss">
-@import "../scss/_variables.scss";
-@import "../scss/_extensions.scss";
-
 .home-wrapper {
   display: flex;
   flex-direction: column;
@@ -53,9 +53,10 @@ export default {
     padding: 30px 30px;
   }
 
-  @media screen and (min-width: 750px) {
+  @media screen and (min-width: $tablet) {
     flex-direction: row;
     max-width: 100vw;
+    height: 100vh;
     justify-content: center;
   }
 
@@ -70,14 +71,14 @@ export default {
   }
 
   i {
-    color: $colorFont1;
+    color: $colorPrimary;
   }
 
   &_list {
     height: 50%;
     width: 90%;
-    background-color: $colorBackground2;
-    margin-top: 50px;
+    @extend %elevation;
+    margin-top: 10px;
     max-width: 400px;
     max-height: 600px;
 
@@ -96,25 +97,38 @@ export default {
       padding: 6% 3% 6% 13%;
     }
   }
+
+  &_background {
+    background: url("../assets/photo-1.jpeg");
+    opacity: 0.2;
+    filter: alpha(opacity=20);
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+  }
 }
 
 .header {
-  @media screen and (min-width: 750px) {
+  @media screen and (min-width: $tablet) {
     padding: 0 50px;
   }
   &_icon {
     font-size: 5rem;
 
-    @media screen and (min-width: 750px) {
-      display: none;
+    @media screen and (min-width: $tablet) {
+      display: none !important;
     }
   }
 
   &_primary {
-    @extend %header-text;
+    @extend %heading-1;
     margin-top: 30px;
+    text-align: center;
 
-    @media screen and (min-width: 750px) {
+    @media screen and (min-width: $tablet) {
       text-align: left;
       font-size: 5rem;
       width: 25vw;
@@ -122,12 +136,13 @@ export default {
   }
 
   &_secondary {
-    @extend %regular-text;
+    @extend %text-subtle;
+    font-size: 2rem;
     text-align: center;
-    margin-top: 30px;
-    width: 260px;
+    margin-top: 20px;
+    width: 300px;
 
-    @media screen and (min-width: 750px) {
+    @media screen and (min-width: $tablet) {
       text-align: left;
       width: 40vw;
       font-size: 2.5rem;
@@ -135,8 +150,7 @@ export default {
   }
 
   &_button {
-    @extend %green-button;
-    margin-top: 50px;
+    margin-top: 25px;
   }
 }
 
@@ -149,7 +163,11 @@ export default {
     i {
       font-size: 4.4rem;
 
-      @media screen and (min-width: 750px) {
+      :first-of-type {
+        margin-right: 20px;
+      }
+
+      @media screen and (min-width: $tablet) {
         font-size: 7rem;
       }
 
@@ -159,18 +177,17 @@ export default {
     }
 
     span {
-      @extend %green-text;
+      @extend %text-gray;
       font-size: 2.5rem;
       margin-left: 12%;
       justify-self: flex-end;
 
-      @media screen and (min-width: 750px) {
-        font-size: 3rem;
+      @media screen and (min-width: $tablet) {
         margin-left: 20%;
       }
 
       @media screen and (min-width: 1250px) {
-        font-size: 5rem;
+        font-size: 4rem;
       }
     }
   }

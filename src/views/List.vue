@@ -1,14 +1,18 @@
 <template>
   <div class="list-wrapper">
+    <nav class="list-wrapper_nav nav">
+      <router-link to="/entry" class="nav_container">
+        <i class="fas fa-angle-left nav_icon-link"></i>
+        <BaseButton :class="'nav-button'" :value="'Powrót'" />
+      </router-link>
+      <router-link to="/create" class="nav_container">
+        <i class="fas fa-plus nav_icon-action"></i>
+        <BaseButton :class="'action-button'" :value="'Dodaj nowy'" />
+      </router-link>
+    </nav>
     <header class="list-wrapper_header">
-      Twoje przepisy
+      Moje przepisy
     </header>
-    <div class="list-wrapper_add">
-      <router-link to="/create" tag="button" class="button"
-        >Dodaj przepis</router-link
-      >
-      <router-link to="/entry" tag="button" class="button">Powrót</router-link>
-    </div>
     <section class="list-wrapper_results" v-if="recipes">
       <!-- List of all fetched recipes -->
       <RecipeItem
@@ -35,12 +39,14 @@
 <script>
 import RecipeItem from "@/components/RecipeItem.vue";
 import RecipeModal from "@/components/RecipeModal.vue";
+import BaseButton from "../components/Button/BaseButton";
 
 export default {
   name: "List",
   components: {
     RecipeItem,
     RecipeModal,
+    BaseButton,
   },
   data() {
     return {
@@ -89,56 +95,59 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/_variables.scss";
-@import "../scss/_extensions.scss";
+.nav {
+  &_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &_icon-link {
+    font-size: 3.5rem;
+    color: #363837;
+  }
+
+  &_icon-action {
+    font-size: 3rem;
+    color: $colorPrimary;
+  }
+}
 
 .list-wrapper {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  max-width: 80%;
+  max-width: 1200px;
   min-height: 800px;
-  padding: 50px 0;
+  padding: 50px $paddingSides;
+
+  &_nav {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3em;
+  }
 
   &_header {
-    @extend %header-text;
+    @extend %heading-2;
   }
 
   &_results {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 300px));
-    justify-content: center;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-auto-rows: 350px;
     gap: 60px;
-    margin-top: 100px;
+    margin-top: 50px;
 
     img {
       width: 100%;
     }
 
     h2 {
-      @extend %green-text;
+      @extend %text-gray;
       font-size: 2.2rem;
       font-weight: 500;
       text-align: center;
       margin-top: 30px;
-    }
-  }
-
-  &_add {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin: 70px 0 0 0;
-
-    i {
-      color: $colorFont1;
-      font-size: 4.4rem;
-      margin-right: 25px;
-    }
-
-    button:nth-of-type(1) {
-      margin-bottom: 20px;
     }
   }
 }
@@ -159,14 +168,6 @@ export default {
     @extend %input;
     height: 40px;
   }
-}
-
-.button {
-  @extend %green-button;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .lds-dual-ring {

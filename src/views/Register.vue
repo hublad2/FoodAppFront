@@ -6,40 +6,55 @@
       </header>
       <section class="register-wrapper_native">
         <form @submit.prevent>
-          <div class="native-input">
-            <label class="native-input_label" for="email2">Email:</label>
-            <input
-              class="native-input_input"
-              v-model.trim="signupForm.email"
-              type="text"
-              placeholder="you@email.com"
-              id="email2"
+          <LabeledField
+            :label="'Email:'"
+            :type="'text'"
+            :placeholder="'twoj@email.com'"
+            :id="'email2'"
+            :value="signupForm.email"
+            @input.native="(e) => (signupForm.email = e.target.value)"
+          />
+          <LabeledField
+            :label="'Hasło:'"
+            :type="'password'"
+            :placeholder="'******'"
+            :id="'password2'"
+            :value="signupForm.password"
+            @input.native="(e) => (signupForm.password = e.target.value)"
+          />
+          <div class="button-wrapper">
+            <BaseButton
+              class="button-register"
+              @click.native="signup()"
+              :value="'Zarejestruj się'"
             />
+            <BaseLink class="button-nav" :target="'/login'" :value="'Powrót'" />
           </div>
-          <div class="native-input">
-            <label class="native-input_label" for="password2">Hasło:</label>
-            <input
-              class="native-input_input"
-              v-model.trim="signupForm.password"
-              type="password"
-              placeholder="******"
-              id="password2"
-            />
-          </div>
-          <button @click="signup()" class="button">Zarejestruj się</button>
-          <router-link to="/login" tag="button" class="button"
-            >Powrót</router-link
-          >
         </form>
       </section>
+      <div class="register-wrapper_logo">
+        <div class="logo">
+          <i class="fas fa-egg"></i>
+          <h3>Kuchnio Zarządzacz</h3>
+        </div>
+      </div>
     </div>
     <div class="background-register"></div>
   </div>
 </template>
 
 <script>
+import BaseButton from "@/components/Button/BaseButton";
+import BaseLink from "@/components/Button/BaseLink";
+import LabeledField from "@/components/Inputs/LabeledField";
+
 export default {
   name: "Register",
+  components: {
+    BaseButton,
+    LabeledField,
+    BaseLink,
+  },
   data() {
     return {
       signupForm: {
@@ -61,76 +76,110 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/_variables.scss";
-@import "../scss/_extensions.scss";
-
 .register-bg-wrapper {
-  @media screen and (min-width: 750px) {
+  @media screen and (min-width: $tablet) {
     display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100vh;
   }
-
   .background-register {
-    @media screen and (min-width: 750px) {
-      flex: 1;
-      background-color: $colorBackground3;
+    @media screen and (min-width: $tablet) {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      background: url("../assets/photo-2.jpeg") no-repeat;
+      background-size: cover;
+      background-position: center;
+      z-index: -1;
+      opacity: 0.2;
     }
   }
 }
 
 .register-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-areas:
+    "header"
+    "social"
+    "spacer"
+    "native";
   margin: 0 auto;
-  max-width: 80%;
   min-height: 800px;
-  padding: 50px 0;
+  padding: 50px;
+  background-color: $colorBackground2;
 
-  @media screen and (min-width: 750px) {
-    width: 450px;
-    margin: 0 50px;
+  @media screen and (min-width: $tablet) {
+    grid-template-columns: 500px;
+    box-shadow: 0 6px 20px rgba(#0d3320, 0.1);
+    min-height: 0;
+    padding: 50px;
+    border-radius: 8px;
+  }
+
+  @media screen and (min-width: $desktop) {
+    width: 70%;
+    max-width: 1800px;
+    display: grid;
+    grid-template-columns: 1fr 500px;
+    grid-template-areas:
+      "logo header"
+      "logo social"
+      "logo spacer"
+      "logo native";
   }
 
   &_header {
-    @extend %header-text;
-  }
-
-  button {
-    display: flex;
-    width: 100%;
-    border: none;
-    padding: 0;
-    align-items: center;
-    height: 46px;
+    @extend %heading-1;
+    text-align: center;
+    grid-area: header;
   }
 
   &_native {
-    button {
-      @extend %green-button;
-      width: 100%;
-      margin: 50px auto 0 auto;
+    grid-area: native;
+    .button-wrapper {
+      margin: 30px auto 0 auto;
       display: flex;
       justify-content: center;
+    }
+    .button-register {
+      flex: 1;
+      margin-right: 1em;
+    }
+    .button-nav {
+      flex: 1;
+    }
+  }
+
+  &_logo {
+    display: none;
+    @media screen and (min-width: $desktop) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      grid-area: logo;
+      height: 100%;
+      width: 100%;
     }
   }
 }
 
-.native-input {
+.logo {
   display: flex;
   flex-direction: column;
-  margin-top: 25px;
-
-  &_label {
-    @extend %regular-text;
-    font-weight: bold;
-    margin-bottom: 3px;
+  align-items: center;
+  h3 {
+    @extend %heading-2;
+    font-size: 2vw;
+    color: rgba(#363837, 1);
   }
-
-  &_input {
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.25);
-    height: 40px;
+  i {
+    font-size: 5rem;
+    margin-bottom: 0.5em;
+    color: $colorPrimary;
   }
 }
 </style>

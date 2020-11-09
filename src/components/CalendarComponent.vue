@@ -74,14 +74,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../scss/_variables.scss";
-@import "../scss/_extensions.scss";
-
 .calendar {
   width: 100%;
   display: flex;
   flex-direction: column;
-  font-family: sans-serif;
 }
 
 .calendar-header {
@@ -154,6 +150,6 @@ export default {
 }
 
 .recipe-active {
-  background: rgba($color: #17b978, $alpha: 0.3);
+  background: $colorSecondary;
 }
 </style>

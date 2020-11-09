@@ -1,59 +1,33 @@
 <template>
   <div class="create-wrapper">
+    <nav class="create-wrapper_nav nav">
+      <router-link to="/list" class="nav_container">
+        <i class="fas fa-angle-left nav_icon-link"></i>
+        <BaseButton :class="'nav-button'" :value="'Powrót'" />
+      </router-link>
+    </nav>
     <header class="create-wrapper_header">
-      <i class="fas fa-scroll"></i>
       <span>Edytuj przepis</span>
     </header>
     <section class="create-wrapper_form">
       <form @submit.prevent class="form">
-        <div class="form-input">
-          <label class="form-input_label" for="description2">Opis</label>
-          <textarea
-            id="description2"
-            rows="4"
-            cols="50"
-            class="form-input_input"
-            placeholder="Krótki opis"
-            v-model.trim="updateForm.description"
-          >
-          </textarea>
-        </div>
-        <div class="form-input">
-          <label class="form-input_label" for="description2">Składniki</label>
-          <textarea
-            id="ingredients2"
-            rows="4"
-            cols="50"
-            class="custom-input"
-            name="ingredients2"
-            v-model.trim="updateForm.ingredients"
-            placeholder="Wpisz składnik i wciśnij enter"
-          ></textarea>
-        </div>
-        <div class="form-input">
-          <label class="form-input_label" for="description2"
-            >Przygotowanie</label
-          >
-          <textarea
-            id="preparation2"
-            rows="15"
-            cols="50"
-            class="form-input_input"
-            v-model.trim="updateForm.preparations"
-            placeholder="Sposób przygotowania"
-          >
-          </textarea>
-        </div>
-        <div class="form-input">
-          <label class="form-input_label" for="photo2">Zjdęcie</label>
-          <input
-            id="photo2"
-            class="form-input_input"
-            accept="image/*"
-            name="photo2"
-            type="file"
-            @change="initPreview()"
-          />
+        <div class="form-wrapper">
+          <div class="form-container photo-input">
+            <label for="photo2"><i class="fas fa-image"></i></label>
+            <input
+              id="photo2"
+              class="form-container_input form-input_input"
+              accept="image/*"
+              name="photo2"
+              type="file"
+              @change="initPreview()"
+            />
+          </div>
+          <div class="form-container name-input">
+            <h2 class="name-input_header" for="name2">
+              {{ updateForm.name }}
+            </h2>
+          </div>
         </div>
         <img
           v-if="previewOpen"
@@ -61,32 +35,63 @@
           id="previewImage"
           class="form-input_preview"
         />
-        <button @click="fetchUpdateRecipe()" class="button-update">
-          Zapisz
-        </button>
-        <router-link to="/list" tag="button" class="button-update"
-          >Powrót</router-link
-        >
+        <NewRecipeCard
+          :header="'Składniki'"
+          :value="'Dodaj składnik'"
+          :inputName="'ingredients'"
+          :initialValues="updateForm.ingredients"
+          :type="'ingredients'"
+          @sendToParent="(e) => updateValue('ingredients', e)"
+        />
+        <NewRecipeCard
+          :header="'Przygotowanie'"
+          :value="'Dodaj etap'"
+          :inputName="'preparation'"
+          :initialValues="updateForm.preparations"
+          :type="'preparation'"
+          @sendToParent="(e) => updateValue('preparations', e)"
+        />
+        <div class="form-container form-input">
+          <label class="form-container--label" for="description2">Opis</label>
+          <textarea
+            id="description2"
+            rows="4"
+            cols="50"
+            class="form-container_input form-input_input"
+            placeholder="Krótki opis"
+            v-model.trim="updateForm.description"
+          >
+          </textarea>
+        </div>
+        <div v-if="previewOpen" class="progress-container">
+          <h4>Status wysyłania:</h4>
+          <progress value="0" max="100" id="progress-bar"></progress>
+        </div>
+        <BaseButton :value="'Zapisz'" @click.native="fetchUpdateRecipe()" />
       </form>
     </section>
   </div>
 </template>
 
 <script>
-import Tagify from "@yaireo/tagify/dist/tagify.min.js";
-import "@yaireo/tagify/dist/tagify.css";
 import { storage } from "../firebase";
+import NewRecipeCard from "@/components/Inputs/NewRecipeCard";
+import BaseButton from "@/components/Button/BaseButton";
 
 export default {
   name: "Update",
+  components: {
+    BaseButton,
+    NewRecipeCard,
+  },
   data() {
     return {
       updateForm: {
+        name: "",
         description: "",
         ingredients: [],
-        preparations: "",
+        preparations: [],
       },
-      title: null,
       photo: null,
       photoURL: null,
       previewPhoto: null,
@@ -95,32 +100,11 @@ export default {
   },
   created() {
     this.updateForm.preparations = this.$store.state.currentRecipe.preparation;
-    this.title = this.$store.state.currentRecipe.title;
+    this.updateForm.name = this.$store.state.currentRecipe.title;
+    this.updateForm.ingredients = this.$store.state.currentRecipe.ingredients;
     this.updateForm.description = this.$store.state.currentRecipe.description;
     this.previewPhoto = this.$store.state.currentRecipe.photo;
     this.previewOpen = true;
-  },
-  mounted() {
-    const input = document.querySelector("textarea[name=ingredients2]");
-
-    let ingredients = new Tagify(input, {
-      enforceWhitelist: false,
-      delimiters: null,
-    });
-
-    ingredients.on("add", (e) => {
-      this.updateForm.ingredients.push(e.detail.data.value);
-    });
-
-    ingredients.on("remove", (e) => {
-      this.updateForm.ingredients = this.updateForm.ingredients.filter(
-        (ingredient) => ingredient != e.detail.data.value
-      );
-    });
-
-    this.$store.state.currentRecipe.ingredients.forEach((ingredient) => {
-      ingredients.addTags(ingredient);
-    });
   },
   methods: {
     checkIfOkToSend() {
@@ -141,7 +125,7 @@ export default {
     },
     UploadImgToFirebase(img) {
       let progressBar = document.querySelector("#progress-bar");
-      let storageRef = storage.ref(this.createForm.name);
+      let storageRef = storage.ref(this.updateForm.name);
       let task = storageRef.put(img);
 
       return new Promise((resolve) => {
@@ -182,7 +166,7 @@ export default {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                name: this.title,
+                name: this.updateForm.name,
                 description: this.updateForm.description,
                 ingredients: this.updateForm.ingredients,
                 preparation: this.updateForm.preparations,
@@ -193,6 +177,7 @@ export default {
           );
           let resultsJSON = await results.json();
           console.log(resultsJSON);
+          this.$router.push("List");
         } catch (err) {
           alert("Something went wrong");
           console.log(err);
@@ -206,87 +191,50 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/_variables.scss";
-@import "../scss/_extensions.scss";
+@import "@/scss/create-update.scss";
 
-.create-wrapper {
+.nav {
+  &_container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  &_icon-link {
+    font-size: 3.5rem;
+    color: #363837;
+  }
+
+  &_icon-action {
+    font-size: 3rem;
+    color: $colorPrimary;
+  }
+}
+
+.form-container {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  margin: 0 auto;
-  max-width: 80%;
-  min-height: 800px;
-  padding: 50px 0;
-
-  @media screen and (min-width: 750px) {
-    max-width: 1000px;
-    padding: 50px;
-  }
-
-  &_header {
-    @extend %header-text;
-
-    span {
-      font-size: 2.6rem;
-    }
-
-    i {
-      margin-right: 20px;
-    }
-  }
-}
-
-.button-update {
-  @extend %green-button;
-  width: 100%;
-  margin: 50px auto 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.custom-input {
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  @extend %regular-text;
-
-  .tagify__input::before {
-    /* Chrome/Opera/Safari */
-    white-space: pre-line;
-    position: absolute;
-    top: 5px;
-  }
-}
-
-.form-input {
-  display: flex;
-  flex-direction: column;
-  margin-top: 25px;
-
-  &_label {
-    @extend %regular-text;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
 
   &_input {
-    @extend %regular-text;
+    @extend %text-gray;
     background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.25);
   }
 
-  ::-webkit-input-placeholder {
-    padding: 5px 0 0 5px;
+  &--label {
+    @extend %heading-5;
+    margin-bottom: 10px;
   }
+}
 
-  &_single-line {
-    height: 40px;
-  }
+.name-input {
+  flex-direction: column;
+  padding: 0 2em;
+  flex: 1;
+  justify-content: center;
 
-  &_preview {
-    margin-top: 10px;
-    width: 100%;
-    border: 1px solid rgba(0, 0, 0, 0.25);
+  &_header {
+    @extend %heading-4;
   }
 }
 </style>

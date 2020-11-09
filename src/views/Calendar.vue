@@ -1,5 +1,11 @@
 <template>
   <div class="calendar-wrapper">
+    <nav class="list-wrapper_nav nav">
+      <router-link to="/entry" class="nav_container">
+        <i class="fas fa-angle-left nav_icon-link"></i>
+        <BaseButton :class="'nav-button'" :value="'Powrót'" />
+      </router-link>
+    </nav>
     <header class="calendar-wrapper_header-primary">
       Kalendarz
     </header>
@@ -48,18 +54,21 @@
       ref="recipeList"
     />
     <div v-if="loading" class="lds-dual-ring"></div>
-    <button @click="clickSave" v-if="selected && !loading" class="button">
-      Dodaj przepis do dnia
-    </button>
-    <router-link to="/entry" tag="button" class="button">Powrót</router-link>
+    <BaseButton
+      @click.native="clickSave"
+      v-if="selected && !loading"
+      :value="'Dodaj przepis do dnia'"
+      class="calendar-wrapper_button"
+    />
   </div>
 </template>
 
 <script>
-import CalendarComponent from "@/components/CalendarComponent.vue";
-import RecipeList from "@/components/RecipeList.vue";
-import RecipeItem from "@/components/RecipeItem.vue";
-import RecipeModal from "@/components/RecipeModal.vue";
+import CalendarComponent from "@/components/CalendarComponent";
+import RecipeList from "@/components/RecipeList";
+import RecipeItem from "@/components/RecipeItem";
+import RecipeModal from "@/components/RecipeModal";
+import BaseButton from "@/components/Button/BaseButton";
 
 export default {
   name: "Calendar",
@@ -68,6 +77,7 @@ export default {
     RecipeList,
     RecipeItem,
     RecipeModal,
+    BaseButton,
   },
   data() {
     return {
@@ -152,25 +162,40 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/_variables.scss";
-@import "../scss/_extensions.scss";
+.nav {
+  &_container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  &_icon-link {
+    font-size: 3.5rem;
+    color: #363837;
+  }
+
+  &_icon-action {
+    font-size: 3rem;
+    color: $colorPrimary;
+  }
+}
 
 .calendar-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  min-height: 800px;
-  max-width: 1000px;
-  padding: 30px 0;
   margin: 0 auto;
+  min-height: 800px;
+  max-width: 1200px;
+  padding: 50px $paddingSides;
+
+  &_nav {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3em;
+  }
 
   @media screen and (min-width: 350px) {
     padding: 30px 30px;
-  }
-
-  i {
-    color: $colorFont1;
-    cursor: pointer;
   }
 
   &_header-icon {
@@ -178,14 +203,12 @@ export default {
   }
 
   &_header-primary {
-    @extend %header-text;
+    @extend %heading-2;
     margin-top: 30px;
   }
 
   &_header-secondary {
-    @extend %regular-text;
-    text-align: center;
-    width: 260px;
+    @extend %text-gray;
     margin-top: 20px;
 
     @media screen and (min-width: 350px) {
@@ -193,37 +216,23 @@ export default {
     }
   }
 
-  &_button {
-    @extend %green-button;
-    margin-top: 50px;
-  }
-
   &_list {
-    height: 80%;
-    background-color: $colorBackground2;
+    @extend %elevation;
+    max-width: 100%;
     padding: 2%;
     max-height: 600px;
-    box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.1);
-    margin-top: 30px;
+    margin-top: 20px;
 
     @media screen and (min-width: 750px) {
-      width: 100%;
+      max-width: 1200px;
       max-height: 60%;
       margin-top: 60px;
-    }
-
-    ul {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-evenly;
     }
   }
 
   .header-recipes {
     text-align: center;
-    @extend %green-text;
-    font-size: 3rem;
+    @extend %heading-3;
     margin-top: 30px;
 
     @media screen and (min-width: 750px) {
@@ -238,14 +247,27 @@ export default {
   &_day-list {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 300px));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     justify-content: center;
     gap: 60px;
     margin-top: 50px;
+    grid-auto-rows: 350px;
 
     img {
       width: 100%;
     }
+
+    h2 {
+      @extend %text-gray;
+      font-size: 2.2rem;
+      font-weight: 500;
+      text-align: center;
+      margin-top: 30px;
+    }
+  }
+
+  &_button {
+    margin-top: 2em;
   }
 }
 
@@ -263,16 +285,6 @@ export default {
     @extend %regular-text;
     font-size: 6vw;
   }
-}
-
-.button {
-  @extend %green-button;
-  width: 100%;
-  margin: 50px auto 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
 }
 
 .lds-dual-ring {
