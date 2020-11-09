@@ -179,6 +179,7 @@ export default {
     span {
       @extend %text-gray;
       font-size: 2.5rem;
+      line-height: 4.5rem;
       margin-left: 12%;
       justify-self: flex-end;
 
