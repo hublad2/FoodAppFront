@@ -5,42 +5,33 @@
         Zaloguj się
       </header>
       <section class="login-wrapper_social">
-        <button class="social-google" @click="loginGoogle()">
-          <img
-            src="../assets/btn_google_dark_normal_ios.svg"
-            alt="google logo"
-          />
-          <span>Zaloguj się przez Google</span>
-        </button>
-        <button class="social-facebook" @click="loginFacebook()">
-          <img src="../assets/f_logo_RGB-White_58.png" alt="facebook logo" />
-          <span>Zaloguj się przez Facebook</span>
-        </button>
+        <GoogleLogin />
+        <FacebookLogin />
       </section>
-      <div class="login-wrapper_spacer"><span>lub</span></div>
+      <BaseSpacer :value="'lub'" />
       <section class="login-wrapper_native">
         <form @submit.prevent>
-          <div class="native-input">
-            <label class="native-input_label" for="email1">Email</label>
-            <input
-              class="native-input_input"
-              v-model.trim="loginForm.email"
-              type="text"
-              placeholder="you@email.com"
-              id="email1"
-            />
-          </div>
-          <div class="native-input">
-            <label class="native-input_label" for="password1">Hasło</label>
-            <input
-              class="native-input_input"
-              v-model.trim="loginForm.password"
-              type="password"
-              placeholder="******"
-              id="password1"
-            />
-          </div>
-          <BaseButton @click="login()" :value="'Zaloguj się'" />
+          <LabeledField
+            :label="'Email'"
+            :type="'text'"
+            :placeholder="'twoj@email.com'"
+            :id="'email1'"
+            :value="loginForm.email"
+            @input.native="(e) => (loginForm.email = e.target.value)"
+          />
+          <LabeledField
+            :label="'Hasło'"
+            :type="'password'"
+            :placeholder="'******'"
+            :id="'password1'"
+            :value="loginForm.password"
+            @input.native="(e) => (loginForm.password = e.target.value)"
+          />
+          <BaseButton
+            class="button-register"
+            @click="login()"
+            :value="'Zaloguj się'"
+          />
           <ul class="native-extras">
             <li>
               <span>Nie masz konta? </span>
@@ -66,11 +57,19 @@
 
 <script>
 import BaseButton from "@/components/Button/BaseButton";
+import LabeledField from "@/components/Inputs/LabeledField";
+import GoogleLogin from "@/components/Button/GoogleLogin";
+import FacebookLogin from "@/components/Button/FacebookLogin";
+import BaseSpacer from "@/components/Spacer/BaseSpacer";
 
 export default {
   name: "Login",
   components: {
     BaseButton,
+    LabeledField,
+    GoogleLogin,
+    FacebookLogin,
+    BaseSpacer,
   },
   data() {
     return {
@@ -90,18 +89,6 @@ export default {
         email: this.loginForm.email,
         password: this.loginForm.password,
       });
-    },
-    signup() {
-      this.$store.dispatch("signup", {
-        email: this.signupForm.email,
-        password: this.signupForm.password,
-      });
-    },
-    loginGoogle() {
-      this.$store.dispatch("loginGoogle");
-    },
-    loginFacebook() {
-      this.$store.dispatch("loginFacebook");
     },
   },
 };
@@ -189,7 +176,7 @@ export default {
 
   &_spacer {
     grid-area: spacer;
-    @extend %regular-text;
+    @extend %text-gray;
     width: 100%;
     text-align: center;
     border-bottom: 1px solid #000;
@@ -204,10 +191,9 @@ export default {
 
   &_native {
     grid-area: native;
-    button {
-      margin: 30px auto 0 auto;
-      display: flex;
-      justify-content: center;
+    .button-register {
+      margin-top: 30px;
+      width: 100%;
     }
   }
 
@@ -221,54 +207,6 @@ export default {
       height: 100%;
       width: 100%;
     }
-  }
-}
-
-.social-google {
-  background-color: #4285f4;
-  font-family: "Roboto", sans-serif;
-  font-weight: 500;
-
-  span {
-    margin: 0 auto;
-    color: white;
-    font-size: 1.7rem;
-  }
-}
-
-.social-facebook {
-  background-color: #1877f2;
-  font-family: "Roboto", sans-serif;
-  font-weight: 500;
-  margin-top: 30px;
-
-  img {
-    height: 80%;
-    margin-left: 5px;
-  }
-
-  span {
-    margin: 0 auto;
-    color: white;
-    font-size: 1.7rem;
-  }
-}
-
-.native-input {
-  display: flex;
-  flex-direction: column;
-  margin-top: 25px;
-
-  &_label {
-    @extend %text-subtle;
-    margin-bottom: 3px;
-  }
-
-  &_input {
-    background: #ffffff;
-    border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
-    height: 40px;
   }
 }
 

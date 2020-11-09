@@ -48,4 +48,8 @@ export default {
   display: inline;
   padding: 20px 20px;
 }
+
+.menu-link {
+  width: 100%;
+}
 </style>

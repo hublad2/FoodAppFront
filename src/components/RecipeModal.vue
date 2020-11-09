@@ -1,16 +1,41 @@
 <template>
   <div class="outer-wrapper">
     <div class="recipe-wrapper">
+      <nav class="recipe-wrapper_nav nav">
+        <div @click="$emit('close-recipe-modal')" class="nav_container">
+          <i class="fas fa-angle-left nav_icon-link"></i>
+          <BaseButton :class="'nav-button'" :value="'Powrót'" />
+        </div>
+        <div
+          v-if="listMode && !calendarMode"
+          @click="fetchDeleteRecipe()"
+          class="nav_container"
+        >
+          <i class="fas fa-trash-alt nav_icon-action"></i>
+          <BaseButton :class="'action-button'" :value="'Usuń przepis'" />
+        </div>
+      </nav>
       <header class="recipe-wrapper_header">
         <span>{{ title }}</span>
-        <i @click="$emit('close-recipe-modal')" class="fas fa-times"></i>
+        <BaseLink
+          v-if="!edamamId && !calendarMode"
+          :value="'Edytuj przepis'"
+          :target="'/update'"
+        />
+        <BaseButton
+          v-if="calendarMode"
+          @click.native="fetchDeleteDate()"
+          :value="'Usuń przepis z dnia'"
+        />
       </header>
-      <img class="recipe-image" :src="photo" />
+      <div class="recipe-image">
+        <img :src="photo" />
+      </div>
       <section
         class="recipe-wrapper_recipe recipe-description"
         v-if="!edamamId"
       >
-        <h2>Opis</h2>
+        <h2 class="recipe-description_header">Opis</h2>
         <p>{{ description }}</p>
       </section>
       <section class="recipe-wrapper_recipe recipe-ingredients">
@@ -24,44 +49,43 @@
           />
         </div>
       </section>
-      <section
-        class="recipe-wrapper_recipe recipe-preparation"
-        v-if="!edamamId"
-      >
-        <h2>Przygotowanie</h2>
-        <p>{{ preparation }}</p>
+      <section class="recipe-wrapper_recipe recipe-preparation">
+        <h2 class="recipe-preparation_header">Przygotowanie</h2>
+        <!-- If recipe is from Edamam, preparation is a link, not a text -->
+        <a v-if="edamamId" :href="preparation" target="_blank">
+          <BaseButton :value="'Przejdź'" />
+        </a>
+        <ul class="recipe-preparation_list" v-if="!edamamId">
+          <RecipeStep
+            :key="index"
+            v-for="(step, index) in preparation"
+            :step="step"
+            :index="index"
+          />
+        </ul>
       </section>
-      <!-- If recipe is from Edamam, preparation is a link, not a text -->
-      <button v-if="edamamId" class="button">
-        <a :href="preparation" target="_blank">Przygotowanie</a>
-      </button>
-      <button v-if="!listMode" @click="fetchSaveRecipe()" class="button">
-        Zapisz przepis
-      </button>
-      <button
-        v-if="listMode && !calendarMode"
-        @click="fetchDeleteRecipe()"
-        class="button"
-      >
-        Usuń przepis
-      </button>
-      <button v-if="calendarMode" @click="fetchDeleteDate()" class="button">
-        Usuń przepis z dnia
-      </button>
-      <router-link v-if="!edamamId" to="/update" tag="button" class="button"
-        >Edytuj przepis</router-link
-      >
+      <BaseButton
+        v-if="!listMode"
+        @click.native="fetchSaveRecipe()"
+        :value="'Zapisz przepis'"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import Ingredient from "@/components/Ingredient.vue";
+import BaseButton from "@/components/Button/BaseButton";
+import BaseLink from "@/components/Button/BaseLink";
+import RecipeStep from "@/components/Recipe/RecipeStep";
 
 export default {
   name: "RecipeModal",
   components: {
     Ingredient,
+    BaseButton,
+    BaseLink,
+    RecipeStep,
   },
   props: {
     itemRecipeModal: {
@@ -83,14 +107,12 @@ export default {
   },
   data() {
     return {
-      return: {
-        ingredients: [],
-        photo: null,
-        preparation: null,
-        title: null,
-        description: null,
-        dateId: null,
-      },
+      ingredients: [],
+      photo: null,
+      preparation: [],
+      title: null,
+      description: null,
+      dateId: null,
       recipes: [],
     };
   },
@@ -214,9 +236,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.nav {
+  &_container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  &_icon-link {
+    font-size: 3.5rem;
+    color: #363837;
+  }
+
+  &_icon-action {
+    font-size: 3rem;
+    color: $colorPrimary;
+  }
+}
+
 .outer-wrapper {
   position: fixed;
-  background-color: $colorBackground1;
+  background-color: $colorBackground2;
   overflow-y: scroll;
   top: 0;
   bottom: 0;
@@ -225,66 +265,79 @@ export default {
 }
 
 .recipe-wrapper {
+  @extend %text-gray;
   display: flex;
   flex-direction: column;
+  padding: 50px $paddingSides;
+  max-width: 1000px;
   margin: 0 auto;
-  max-width: 80%;
-  min-height: 800px;
-  padding: 50px 0;
 
-  @media screen and (min-width: 750px) {
-    max-width: 1200px;
-    padding: 50px;
+  &_nav {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3em;
   }
 
   &_header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    @extend %header-text;
-    margin-bottom: 50px;
+    @extend %heading-3;
 
     span {
-      font-size: 2rem;
+      display: block;
     }
 
-    i {
-      margin-left: 20px;
-      font-size: 4rem;
-      color: orangered;
+    a {
+      margin-top: 30px;
     }
-  }
 
-  h2 {
-    @extend %regular-text;
-    font-size: 2.2rem;
-    font-weight: 500;
-    text-align: left;
-    margin-bottom: 30px;
+    @media screen and (min-width: $tablet) {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      a {
+        margin-top: 0;
+      }
+    }
+
+    margin-bottom: 50px;
   }
 }
 
 .recipe-image {
-  width: 80%;
-  margin: 0 auto 30px auto;
-  border: 1px solid rgba($color: #000000, $alpha: 0.25);
+  @extend %elevation;
+  padding: 2em;
+  margin-bottom: 30px;
+  max-width: 700px;
+  height: 400px;
 
-  @media screen and (min-width: 750px) {
-    width: 40%;
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 
 .recipe-description {
-  p {
-    @extend %regular-text;
-    background-color: white;
-    padding: 20px;
+  @extend %elevation;
+  padding: 2em;
+
+  &_header {
+    @extend %heading-4;
+    margin-bottom: 30px;
   }
   margin-bottom: 30px;
 }
 
 .recipe-ingredients {
+  @extend %elevation;
+  padding: 2em;
+  margin-bottom: 30px;
+
   &_header {
+    @extend %heading-4;
+    margin-bottom: 30px;
+
     @media screen and (min-width: 750px) {
       grid-column: span 2;
     }
@@ -296,29 +349,20 @@ export default {
     gap: 20px;
 
     @media screen and (min-width: 750px) {
-      grid-template-columns: repeat(auto-fit, minmax(120px, 500px));
-      justify-content: center;
+      grid-template-columns: 1fr 1fr;
     }
   }
 }
 
 .recipe-preparation {
-  margin-top: 30px;
-  p {
-    @extend %regular-text;
-    background-color: white;
-    padding: 20px;
-  }
+  @extend %elevation;
+  padding: 2em;
   margin-bottom: 30px;
-}
 
-.button {
-  @extend %green-button;
-  width: 100%;
-  margin: 50px auto 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  &_header {
+    @extend %heading-4;
+    margin-bottom: 30px;
+  }
 }
 
 a {

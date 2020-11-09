@@ -16,6 +16,9 @@ export default {
 
 <style lang="scss" scoped>
 .button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-family: $primaryFont;
   background-color: $colorPrimary;
   font-size: 1.6rem;
@@ -45,5 +48,11 @@ export default {
   margin: 2px 0 0 10px;
   width: auto;
   font-size: 1.8rem;
+}
+
+.secondary {
+  background: none;
+  border: 2px solid $colorPrimary;
+  color: $colorPrimary;
 }
 </style>

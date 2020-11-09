@@ -116,6 +116,8 @@ export default {
 .list-wrapper {
   display: flex;
   flex-direction: column;
+  margin: 0 auto;
+  max-width: 1200px;
   min-height: 800px;
   padding: 50px $paddingSides;
 
@@ -131,7 +133,7 @@ export default {
 
   &_results {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     grid-auto-rows: 350px;
     gap: 60px;
     margin-top: 50px;
@@ -141,7 +143,7 @@ export default {
     }
 
     h2 {
-      @extend %green-text;
+      @extend %text-gray;
       font-size: 2.2rem;
       font-weight: 500;
       text-align: center;
