@@ -110,7 +110,7 @@ export default {
       description: null,
       dateId: null,
       recipes: [],
-      edamamId: false,
+      edamamId: true,
     };
   },
   created() {

@@ -122,6 +122,7 @@ export default {
   padding: 10px 0;
 
   img {
+    object-fit: cover;
     height: 120px;
     width: 120px;
   }
