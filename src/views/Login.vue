@@ -3,6 +3,10 @@
     <div class="login-wrapper">
       <header class="login-wrapper_header">
         Zaloguj się
+        <h3>
+          (może zajać do 10 sekund, ponieważ hosting wyłącza backend w okresach
+          małej aktywności)
+        </h3>
       </header>
       <section class="login-wrapper_social">
         <GoogleLogin />
@@ -155,6 +159,11 @@ export default {
     @extend %heading-1;
     text-align: center;
     grid-area: header;
+
+    h3 {
+      margin-top: 10px;
+      font-size: 12px;
+    }
   }
 
   &_social {
@@ -162,7 +171,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 110px;
+    margin-top: 70px;
 
     button {
       display: flex;
